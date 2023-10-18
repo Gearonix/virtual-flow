@@ -1,8 +1,8 @@
-import { useCallback }      from 'react'
-import { useRef }           from 'react'
-import { useState }         from 'react'
+import { useCallback } from 'react'
+import { useRef }      from 'react'
+import { useState }    from 'react'
 
-import { useVirtual }       from '@/lib/virtual.hook'
+import { useVirtual }  from '@/lib/virtual.hook'
 
 const items = Array.from({ length: 1_000 }, (_, idx) => ({
   id: Math.random().toString(36).slice(2),
@@ -17,11 +17,8 @@ export const Virtual = () => {
   const virtualFlow = useVirtual({
     count: listItems.length,
     itemHeight: 40,
-    containerHeight: 610,
     getScrollElement: useCallback(() => scrollRef.current, [])
   })
-
-  console.log(virtualFlow.isScrolling)
 
   return (
     <div>

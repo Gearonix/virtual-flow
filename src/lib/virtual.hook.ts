@@ -7,7 +7,6 @@ import { useState }        from 'react'
 export interface UseVirtualProps {
   count: number
   getScrollElement: () => Nullable<HTMLElement>
-  containerHeight: number
   itemHeight: number
   overscan?: number
   scrollingDelay?: number
@@ -23,7 +22,6 @@ export const useVirtual = ({
   getScrollElement,
   scrollingDelay = 100,
   itemHeight,
-  containerHeight,
   overscan = 3
 }: UseVirtualProps) => {
   const [listHeight, setListHeight] = useState(0)
@@ -52,7 +50,14 @@ export const useVirtual = ({
       }, scrollingDelay)
     }
 
-    const resizeObserver = new ResizeObserver(([entry]) => {})
+    const resizeObserver = new ResizeObserver(([entry]) => {
+      if (!entry) {
+        return
+      }
+
+      const height = entry.target.getBoundingClientRect().height
+      setListHeight(height)
+    })
 
     resizeObserver.observe(scrollElement)
 
@@ -63,11 +68,11 @@ export const useVirtual = ({
       clearTimeout(timeoutId)
       scrollElement.removeEventListener('scroll', handleScroll)
     }
-  }, [])
+  }, [getScrollElement])
 
   const virtualItems = useMemo(() => {
     const rangeStart = scrollTop
-    const rangeEnd = scrollTop + containerHeight
+    const rangeEnd = scrollTop + listHeight
 
     let startIdx = Math.floor(rangeStart / itemHeight)
     let endIdx = Math.ceil(rangeEnd / itemHeight)
@@ -85,7 +90,7 @@ export const useVirtual = ({
     }
 
     return virtualItems
-  }, [scrollTop, itemsCount])
+  }, [scrollTop, itemsCount, listHeight])
 
   const totalListHeight = itemHeight * itemsCount
 
