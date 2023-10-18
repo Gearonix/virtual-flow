@@ -1,0 +1,40 @@
+{
+  "name": "project",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/rollup:rollup",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist",
+        "tsConfig": "tsconfig.json",
+        "project": "package.json",
+        "entryFile": "src/index.ts",
+        "external": ["react", "react-dom", "react/jsx-runtime"],
+        "rollupConfig": "@nx/react/plugins/bundle-rollup",
+        "compiler": "babel",
+        "assets": [
+          {
+            "glob": "README.md",
+            "input": ".",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "npm version patch --no-git-tag-version",
+          "npm publish --access public --tag latest"
+        ],
+        "cwd": "dist"
+      },
+      "dependsOn": ["build"]
+    }
+  }
+}
