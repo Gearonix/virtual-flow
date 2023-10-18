@@ -1,5 +1,5 @@
-import { hello } from '@project'
+import { Virtual } from '@project'
 
 export const Entrypoint = () => {
-  return hello
+  return <Virtual />
 }

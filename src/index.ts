@@ -1,1 +1,1 @@
-export const hello = 'world' as const
+export { Virtual } from './virtual'
