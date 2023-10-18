@@ -4,7 +4,7 @@ import { useState }    from 'react'
 
 import { useVirtual }  from '@/lib/virtual.hook'
 
-const items = Array.from({ length: 1_000 }, (_, idx) => ({
+const items = Array.from({ length: 1_00 }, (_, idx) => ({
   id: Math.random().toString(36).slice(2),
   text: String(idx)
 }))
@@ -13,10 +13,9 @@ export const Virtual = () => {
   const [listItems, setListItems] = useState(items)
 
   const scrollRef = useRef<HTMLDivElement>(null)
-
   const virtualFlow = useVirtual({
     count: listItems.length,
-    itemHeight: 40,
+    itemHeight: () => 40 + Math.round(Math.random() * 10) * 3,
     getScrollElement: useCallback(() => scrollRef.current, [])
   })
 
@@ -34,22 +33,27 @@ export const Virtual = () => {
       <div
         ref={scrollRef}
         style={{
-          height: 610,
+          height: 600,
           overflow: 'auto',
-          border: '1px solid lightgrey',
+          /**
+           * Can cause a bug at the end with scrollHeight
+           */
+          // border: '1px solid lightgrey',
+          boxSizing: 'border-box',
           position: 'relative'
         }}>
         <div
           style={{
-            minHeight: virtualFlow.totalListHeight
-          }}>
+            height: virtualFlow.totalListHeight
+        }}>
           {virtualFlow.virtualItems.map((virtualItem) => {
             const item = listItems[virtualItem.idx]
+            // console.log(virtualItem)
             return (
               <div
                 key={virtualItem.idx}
                 style={{
-                  height: 40,
+                  height: virtualItem.height,
                   padding: '6px 12px',
                   border: '1px solid red',
                   boxSizing: 'border-box',

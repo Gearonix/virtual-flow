@@ -7,7 +7,7 @@ import { useState }        from 'react'
 export interface UseVirtualProps {
   count: number
   getScrollElement: () => Nullable<HTMLElement>
-  itemHeight: number
+  itemHeight: (height: number) => number
   overscan?: number
   scrollingDelay?: number
 }
@@ -15,6 +15,7 @@ export interface UseVirtualProps {
 export interface VirtualItem {
   idx: number
   offsetTop: number
+  height: number
 }
 
 export const useVirtual = ({
@@ -70,32 +71,47 @@ export const useVirtual = ({
     }
   }, [getScrollElement])
 
-  const virtualItems = useMemo(() => {
+  const { virtualItems, totalHeight } = useMemo(() => {
     const rangeStart = scrollTop
     const rangeEnd = scrollTop + listHeight
 
-    let startIdx = Math.floor(rangeStart / itemHeight)
-    let endIdx = Math.ceil(rangeEnd / itemHeight)
+    let startIdx = -1
+    let endIdx = -1
 
-    startIdx = Math.max(0, startIdx - overscan)
-    endIdx = Math.min(itemsCount - 1, endIdx + overscan)
+    const allRows: VirtualItem[] = new Array(itemsCount).fill(null)
+    let totalHeight = 0
 
-    const virtualItems: VirtualItem[] = []
+    for (let idx = 0; idx < allRows.length; idx++) {
+      const row: VirtualItem = {
+        idx,
+        height: itemHeight(idx),
+        offsetTop: totalHeight
+      }
 
-    for (let i = startIdx; i <= endIdx; i++) {
-      virtualItems.push({
-        idx: i,
-        offsetTop: i * itemHeight
-      })
+      totalHeight += row.height
+      allRows[idx] = row
+
+      if (startIdx === -1 && row.offsetTop + row.height > rangeStart) {
+        startIdx = Math.max(0, idx - overscan)
+      }
+
+      if (endIdx === -1 && row.offsetTop + row.height - 10 >= rangeEnd) {
+        endIdx = Math.min(itemsCount - 1, idx + overscan)
+      }
     }
 
-    return virtualItems
-  }, [scrollTop, itemsCount, listHeight])
+    endIdx = endIdx === -1 ? itemsCount - 1 : endIdx
 
-  const totalListHeight = itemHeight * itemsCount
+    const virtualItems = allRows.slice(startIdx, endIdx + 1)
+
+    return {
+      virtualItems,
+      totalHeight
+    }
+  }, [scrollTop, overscan, listHeight, itemHeight, itemsCount])
 
   return {
-    totalListHeight,
+    totalListHeight: totalHeight,
     virtualItems,
     isScrolling
   }
