@@ -10,6 +10,10 @@ const items = Array.from({ length: 1_00 }, () => ({
   text: faker.lorem.text()
 }))
 
+export const computeRandomHeight = () => {
+  return 40 + Math.round(Math.random() * 10)
+}
+
 export const Virtual = () => {
   const [listItems, setListItems] = useState(items)
 
@@ -50,14 +54,14 @@ export const Virtual = () => {
           }}>
           {virtualFlow.virtualItems.map((virtualItem) => {
             const item = listItems[virtualItem.idx]
-            // console.log(virtualItem)
+
             return (
               <div
                 key={virtualItem.idx}
                 data-vindex={virtualItem.idx}
                 ref={virtualFlow.measureElement}
                 style={{
-                  height: virtualItem.height,
+                  height: computeRandomHeight(),
                   padding: '6px 12px',
                   border: '1px solid red',
                   boxSizing: 'border-box',

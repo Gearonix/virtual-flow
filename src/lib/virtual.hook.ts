@@ -103,10 +103,10 @@ export const useVirtual = ({
         return itemHeight(idx)
       }
 
-      const key = getItemKey(idx)
+      const itemKey = getItemKey(idx)
 
-      if (typeof measurmentCache[key] === 'number') {
-        return measurmentCache[key]!
+      if (typeof measurmentCache[itemKey] === 'number') {
+        return measurmentCache[itemKey]!
       }
 
       return estimateHeight!(idx)
