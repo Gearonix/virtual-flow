@@ -1,12 +1,13 @@
+import { faker }       from '@faker-js/faker'
 import { useCallback } from 'react'
 import { useRef }      from 'react'
 import { useState }    from 'react'
 
 import { useVirtual }  from '@/lib/virtual.hook'
 
-const items = Array.from({ length: 1_00 }, (_, idx) => ({
+const items = Array.from({ length: 1_00 }, () => ({
   id: Math.random().toString(36).slice(2),
-  text: String(idx)
+  text: faker.lorem.text()
 }))
 
 export const Virtual = () => {
@@ -15,7 +16,8 @@ export const Virtual = () => {
   const scrollRef = useRef<HTMLDivElement>(null)
   const virtualFlow = useVirtual({
     count: listItems.length,
-    itemHeight: () => 40 + Math.round(Math.random() * 10) * 3,
+    estimateHeight: useCallback(() => 40, []),
+    getItemKey: useCallback((idx: number) => listItems[idx]!.id, [listItems]),
     getScrollElement: useCallback(() => scrollRef.current, [])
   })
 
@@ -45,13 +47,15 @@ export const Virtual = () => {
         <div
           style={{
             height: virtualFlow.totalListHeight
-        }}>
+          }}>
           {virtualFlow.virtualItems.map((virtualItem) => {
             const item = listItems[virtualItem.idx]
             // console.log(virtualItem)
             return (
               <div
                 key={virtualItem.idx}
+                data-vindex={virtualItem.idx}
+                ref={virtualFlow.measureElement}
                 style={{
                   height: virtualItem.height,
                   padding: '6px 12px',
