@@ -57,7 +57,8 @@ export const useUniversalRef = <T>(originalRef: NonNullable<RefItem<T>>) => {
   return useCallback(
     (...args: [Nullable<T>] | RefItem<T>[]) => {
       if (args.length === 1 && !isRef(args[0])) {
-        return setRef(originalRef, args[0])
+        setRef(originalRef, args[0])
+        return
       }
 
       refsToMerge.current = args as RefItem<T>[]

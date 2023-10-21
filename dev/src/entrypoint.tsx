@@ -8,7 +8,7 @@ import { useUniversalRef } from './universal-ref'
 const EXPERIMENTAL_FILES = true as const
 
 export const Entrypoint = () => {
-  const universalRef = useUniversalRef((element) => {
+  const universalRef = useUniversalRef<Element>((element) => {
     console.log(element)
   })
 
