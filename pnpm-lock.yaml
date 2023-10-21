@@ -24,7 +24,7 @@ devDependencies:
     version: 1.3.24(effector@22.8.7)(eslint@8.46.0)(prettier@3.0.3)(svelte@3.59.2)(typescript@5.1.6)
   '@grnx-utils/types':
     specifier: ^1.0.2
-    version: 1.0.2(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.6)
+    version: 1.0.2(react-dom@18.2.0)(react@18.3.0-canary-d803f519e-20231020)(typescript@5.1.6)
   '@nx/eslint-plugin':
     specifier: 16.10.0
     version: 16.10.0(@swc/core@1.3.93)(@types/node@18.14.2)(@typescript-eslint/parser@5.62.0)(eslint@8.46.0)(nx@16.10.0)(typescript@5.1.6)
@@ -57,13 +57,13 @@ devDependencies:
     version: 1.3.93(@swc/helpers@0.5.3)
   '@testing-library/react':
     specifier: 14.0.0
-    version: 14.0.0(react-dom@18.2.0)(react@18.2.0)
+    version: 14.0.0(react-dom@18.2.0)(react@18.3.0-canary-d803f519e-20231020)
   '@types/node':
     specifier: 18.14.2
     version: 18.14.2
   '@types/react':
-    specifier: 18.2.24
-    version: 18.2.24
+    specifier: ^18.2.31
+    version: 18.2.31
   '@types/react-dom':
     specifier: 18.2.9
     version: 18.2.9
@@ -104,11 +104,11 @@ devDependencies:
     specifier: ^3.0.3
     version: 3.0.3
   react:
-    specifier: 18.2.0
-    version: 18.2.0
+    specifier: 18.3.0-canary-d803f519e-20231020
+    version: 18.3.0-canary-d803f519e-20231020
   react-dom:
     specifier: 18.2.0
-    version: 18.2.0(react@18.2.0)
+    version: 18.2.0(react@18.3.0-canary-d803f519e-20231020)
   tslib:
     specifier: ^2.3.0
     version: 2.6.2
@@ -1775,7 +1775,7 @@ packages:
       - typescript
     dev: true
 
-  /@grnx-utils/types@1.0.2(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.6):
+  /@grnx-utils/types@1.0.2(react-dom@18.2.0)(react@18.3.0-canary-d803f519e-20231020)(typescript@5.1.6):
     resolution: {integrity: sha512-QRPTmlxIorYbepfCpjodKm9ZCrBgi4RJllQwMQdZuwaJhZyGvuVMEkis/mhr09x9aSvg6yBelbA68fqbrFW8pA==}
     peerDependencies:
       preact: ^10.15.1
@@ -1793,8 +1793,8 @@ packages:
       react-dom:
         optional: true
     dependencies:
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
+      react: 18.3.0-canary-d803f519e-20231020
+      react-dom: 18.2.0(react@18.3.0-canary-d803f519e-20231020)
       typescript: 5.1.6
     dev: true
 
@@ -2946,7 +2946,7 @@ packages:
       pretty-format: 27.5.1
     dev: true
 
-  /@testing-library/react@14.0.0(react-dom@18.2.0)(react@18.2.0):
+  /@testing-library/react@14.0.0(react-dom@18.2.0)(react@18.3.0-canary-d803f519e-20231020):
     resolution: {integrity: sha512-S04gSNJbYE30TlIMLTzv6QCTzt9AqIF5y6s6SzVFILNcNvbV/jU96GeiTPillGQo+Ny64M/5PV7klNYYgv5Dfg==}
     engines: {node: '>=14'}
     peerDependencies:
@@ -2956,8 +2956,8 @@ packages:
       '@babel/runtime': 7.23.2
       '@testing-library/dom': 9.3.3
       '@types/react-dom': 18.2.9
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
+      react: 18.3.0-canary-d803f519e-20231020
+      react-dom: 18.2.0(react@18.3.0-canary-d803f519e-20231020)
     dev: true
 
   /@tokenizer/token@0.3.0:
@@ -3093,11 +3093,11 @@ packages:
   /@types/react-dom@18.2.9:
     resolution: {integrity: sha512-6nNhVzZ9joQ6F7lozrASuQKC0Kf6ArYMU+DqA2ZrUbB+d+9lC6ZLn1GxiEBI1edmAwvTULtuJ6uPZpv3XudwUg==}
     dependencies:
-      '@types/react': 18.2.24
+      '@types/react': 18.2.31
     dev: true
 
-  /@types/react@18.2.24:
-    resolution: {integrity: sha512-Ee0Jt4sbJxMu1iDcetZEIKQr99J1Zfb6D4F3qfUWoR1JpInkY1Wdg4WwCyBjL257D0+jGqSl1twBjV8iCaC0Aw==}
+  /@types/react@18.2.31:
+    resolution: {integrity: sha512-c2UnPv548q+5DFh03y8lEDeMfDwBn9G3dRwfkrxQMo/dOtRHUUO57k6pHvBIfH/VF4Nh+98mZ5aaSe+2echD5g==}
     dependencies:
       '@types/prop-types': 15.7.8
       '@types/scheduler': 0.16.4
@@ -8031,13 +8031,13 @@ packages:
       safe-buffer: 5.2.1
     dev: true
 
-  /react-dom@18.2.0(react@18.2.0):
+  /react-dom@18.2.0(react@18.3.0-canary-d803f519e-20231020):
     resolution: {integrity: sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==}
     peerDependencies:
       react: ^18.2.0
     dependencies:
       loose-envify: 1.4.0
-      react: 18.2.0
+      react: 18.3.0-canary-d803f519e-20231020
       scheduler: 0.23.0
     dev: true
 
@@ -8058,8 +8058,8 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  /react@18.2.0:
-    resolution: {integrity: sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==}
+  /react@18.3.0-canary-d803f519e-20231020:
+    resolution: {integrity: sha512-1AB43HIkom7FcTSOk4UsMfW2oFIXQ4YYQ9J7sZGRKwEyrDk18xd+EtSNcCeWTenrVN/H9xd+QSyN4pz/zJ9jWQ==}
     engines: {node: '>=0.10.0'}
     dependencies:
       loose-envify: 1.4.0

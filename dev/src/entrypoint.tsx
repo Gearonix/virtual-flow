@@ -5,7 +5,7 @@ import { useRef }          from 'react'
 
 import { useUniversalRef } from './universal-ref'
 
-const EXPERIMENTAL_FILES = true as const
+const EXPERIMENTAL_FILES = false as const
 
 export const Entrypoint = () => {
   const universalRef = useUniversalRef<Element>((element) => {

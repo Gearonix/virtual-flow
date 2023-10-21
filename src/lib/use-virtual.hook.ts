@@ -5,6 +5,8 @@ import { useLayoutEffect } from 'react'
 import { useMemo }         from 'react'
 import { useState }        from 'react'
 
+import { useLatest }       from '@/lib/use-latest.hook'
+
 type ItemKey = string | number
 
 export interface UseVirtualProps {
@@ -130,11 +132,11 @@ export const useVirtual = ({
       totalHeight += row.virtualHeight
       allRows[idx] = row
 
-      if (row.offsetTop + row.virtualHeight > rangeStart && ~startIdx) {
+      if (row.offsetTop + row.virtualHeight > rangeStart && !~startIdx) {
         startIdx = Math.max(0, idx - overscan)
       }
 
-      if (row.offsetTop + row.virtualHeight >= rangeEnd && ~endIdx) {
+      if (row.offsetTop + row.virtualHeight >= rangeEnd && !~endIdx) {
         endIdx = Math.min(itemsCount - 1, idx + overscan)
       }
     }
@@ -157,25 +159,37 @@ export const useVirtual = ({
     measurementCache
   ])
 
-  const measureElement = useCallback((element: Nullable<Element>) => {
-    if (!element) return
+  const latestData = useLatest({
+    measurementCache,
+    getItemKey
+  })
 
-    const idxAttribute = element.getAttribute(VIRTUAL_INDEX_ATTRIBUTE) ?? ''
-    const elementIdx = Number.parseInt(idxAttribute, 10)
+  const measureElement = useCallback(
+    (element: Nullable<Element>) => {
+      if (!element) return
 
-    if (Number.isNaN(elementIdx)) {
-      // TODO: rewrite this
-      return console.error('you forgot data-vindex')
-    }
+      const idxAttribute = element.getAttribute(VIRTUAL_INDEX_ATTRIBUTE) ?? ''
+      const elementIdx = Number.parseInt(idxAttribute, 10)
 
-    const elementRect = element.getBoundingClientRect()
-    const cacheKey = getItemKey(elementIdx)
+      if (Number.isNaN(elementIdx)) {
+        // TODO: rewrite this
+        return console.error(`you forgot ${VIRTUAL_INDEX_ATTRIBUTE}`)
+      }
 
-    setMeasurementCache((cache) => ({
-      ...cache,
-      [cacheKey]: elementRect.height
-    }))
-  }, [])
+      const { measurementCache, getItemKey } = latestData.current
+      const cacheKey = getItemKey(elementIdx)
+
+      if (typeof measurementCache[cacheKey] === 'number') return
+
+      const elementRect = element.getBoundingClientRect()
+
+      setMeasurementCache((cache) => ({
+        ...cache,
+        [cacheKey]: elementRect.height
+      }))
+    },
+    [latestData]
+  )
 
   return {
     totalListHeight: totalHeight,
@@ -184,3 +198,5 @@ export const useVirtual = ({
     measureElement
   }
 }
+
+export {}

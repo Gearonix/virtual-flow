@@ -1,1 +1,1 @@
-export { Virtual } from './virtual'
+export { Virtual } from './virtual.view'
