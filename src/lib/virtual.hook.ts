@@ -1,8 +1,8 @@
 import { Nullable }        from '@grnx-utils/types'
 import { Undefinable }     from '@grnx-utils/types'
 import { useCallback }     from 'react'
-import { useMemo }         from 'react'
 import { useLayoutEffect } from 'react'
+import { useMemo }         from 'react'
 import { useState }        from 'react'
 
 type ItemKey = string | number
@@ -12,7 +12,7 @@ export interface UseVirtualProps {
   getScrollElement: () => Nullable<HTMLElement>
   itemHeight?: (height: number) => number
   overscan?: number
-  estimateHeight?: (idx: number) => number
+  getEstimateHeight?: (idx: number) => number
   getItemKey: (idx: number) => ItemKey
   scrollingDelay?: number
 }
@@ -21,7 +21,7 @@ export interface VirtualItem {
   key: ItemKey
   idx: number
   offsetTop: number
-  height: number
+  virtualHeight: number
 }
 
 const DEFAULT_OVERSCAN = 3 as const
@@ -30,9 +30,9 @@ const VIRTUAL_INDEX_ATTRIBUTE = 'data-vindex' as const
 
 const validateProps = ({
   itemHeight,
-  estimateHeight
+  getEstimateHeight
 }: Partial<UseVirtualProps>) => {
-  if (!itemHeight && !estimateHeight) {
+  if (!itemHeight && !getEstimateHeight) {
     // TODO: rewrite this
     throw new Error('validateProps Error')
   }
@@ -44,11 +44,11 @@ export const useVirtual = ({
   scrollingDelay = DEFAULT_SCROLLING_DELAY,
   itemHeight,
   overscan = DEFAULT_OVERSCAN,
-  estimateHeight,
+  getEstimateHeight,
   getItemKey
 }: UseVirtualProps) => {
-  validateProps({ itemHeight, estimateHeight })
-  const [measurmentCache, setMeasurmentCache] = useState<
+  validateProps({ itemHeight, getEstimateHeight })
+  const [measurementCache, setMeasurementCache] = useState<
     Record<ItemKey, number>
   >({})
   const [listHeight, setListHeight] = useState(0)
@@ -78,10 +78,6 @@ export const useVirtual = ({
     }
 
     const resizeObserver = new ResizeObserver(([entry]) => {
-      if (!entry) {
-        return
-      }
-
       const height = entry.target.getBoundingClientRect().height
       setListHeight(height)
     })
@@ -105,11 +101,11 @@ export const useVirtual = ({
 
       const itemKey = getItemKey(idx)
 
-      if (typeof measurmentCache[itemKey] === 'number') {
-        return measurmentCache[itemKey]!
+      if (typeof measurementCache[itemKey] === 'number') {
+        return measurementCache[itemKey]!
       }
 
-      return estimateHeight!(idx)
+      return getEstimateHeight!(idx)
     }
 
     const rangeStart = scrollTop
@@ -127,18 +123,18 @@ export const useVirtual = ({
       const row: VirtualItem = {
         key: itemKey,
         idx,
-        height: getItemHeight(idx),
+        virtualHeight: getItemHeight(idx),
         offsetTop: totalHeight
       }
 
-      totalHeight += row.height
+      totalHeight += row.virtualHeight
       allRows[idx] = row
 
-      if (startIdx === -1 && row.offsetTop + row.height > rangeStart) {
+      if (row.offsetTop + row.virtualHeight > rangeStart && ~startIdx) {
         startIdx = Math.max(0, idx - overscan)
       }
 
-      if (endIdx === -1 && row.offsetTop + row.height - 10 >= rangeEnd) {
+      if (row.offsetTop + row.virtualHeight >= rangeEnd && ~endIdx) {
         endIdx = Math.min(itemsCount - 1, idx + overscan)
       }
     }
@@ -157,8 +153,8 @@ export const useVirtual = ({
     listHeight,
     itemHeight,
     itemsCount,
-    estimateHeight,
-    measurmentCache
+    getEstimateHeight,
+    measurementCache
   ])
 
   const measureElement = useCallback((element: Nullable<Element>) => {
@@ -175,7 +171,7 @@ export const useVirtual = ({
     const elementRect = element.getBoundingClientRect()
     const cacheKey = getItemKey(elementIdx)
 
-    setMeasurmentCache((cache) => ({
+    setMeasurementCache((cache) => ({
       ...cache,
       [cacheKey]: elementRect.height
     }))

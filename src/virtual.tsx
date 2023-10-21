@@ -20,7 +20,7 @@ export const Virtual = () => {
   const scrollRef = useRef<HTMLDivElement>(null)
   const virtualFlow = useVirtual({
     count: listItems.length,
-    estimateHeight: useCallback(() => 40, []),
+    getEstimateHeight: useCallback(() => 40, []),
     getItemKey: useCallback((idx: number) => listItems[idx]!.id, [listItems]),
     getScrollElement: useCallback(() => scrollRef.current, [])
   })
@@ -61,7 +61,6 @@ export const Virtual = () => {
                 data-vindex={virtualItem.idx}
                 ref={virtualFlow.measureElement}
                 style={{
-                  height: computeRandomHeight(),
                   padding: '6px 12px',
                   border: '1px solid red',
                   boxSizing: 'border-box',
