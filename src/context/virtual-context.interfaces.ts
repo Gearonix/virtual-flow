@@ -1,6 +1,6 @@
 import { ValueOf }      from '@grnx-utils/types'
 
-import { ItemCacheKey } from '@/lib/use-virtual/use-virtual.interfaces'
+import { ItemCacheKey } from '@/core/use-virtual.interfaces'
 
 export interface CachePayload {
   key: ItemCacheKey

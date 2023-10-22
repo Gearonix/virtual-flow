@@ -5,9 +5,9 @@ import { useCallback }                  from 'react'
 import { useMemo }                      from 'react'
 
 import { CachePayload }                 from '@/context/virtual-context.interfaces'
-import { getElementHeight }             from '@/lib/use-virtual/lib'
-import { getMeasurementCacheByElement } from '@/lib/use-virtual/lib'
-import { LatestInstance }               from '@/lib/use-virtual/use-virtual.interfaces'
+import { getElementHeight }             from '@/core/lib'
+import { getMeasurementCacheByElement } from '@/core/lib'
+import { LatestInstance }               from '@/core/use-virtual.interfaces'
 
 export interface UseMeasureElementProps {
   addToCache: (payload: CachePayload) => void

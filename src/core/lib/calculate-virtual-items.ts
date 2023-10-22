@@ -1,5 +1,5 @@
-import { ItemCacheKey } from '@/lib/use-virtual/use-virtual.interfaces'
-import { VirtualItem }  from '@/lib/use-virtual/use-virtual.interfaces'
+import { ItemCacheKey } from '@/core/use-virtual.interfaces'
+import { VirtualItem }  from '@/core/use-virtual.interfaces'
 
 export interface CalculateVirtualItemsProps {
   rangeStart: number

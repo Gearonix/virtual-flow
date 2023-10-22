@@ -4,7 +4,7 @@ import { useRef }                 from 'react'
 import { useState }               from 'react'
 
 import { VirtualContextProvider } from '@/context'
-import { useVirtual }             from '@/lib/use-virtual'
+import { useVirtual }             from '@/core'
 
 const items = Array.from({ length: 1_00 }, () => ({
   id: Math.random().toString(36).slice(2),

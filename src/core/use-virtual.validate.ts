@@ -1,4 +1,4 @@
-import { UseVirtualProps }             from '@/lib/use-virtual/use-virtual.interfaces'
+import { UseVirtualProps }             from '@/core/use-virtual.interfaces'
 import { UseVirtualValidateException } from '@/shared/exceptions'
 
 export const validateProps = ({

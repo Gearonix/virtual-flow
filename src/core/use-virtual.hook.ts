@@ -7,7 +7,7 @@ import { useMemo }                     from 'react'
 
 import { VirtualContextPayload }       from '@/context/virtual-context.interfaces'
 import { VirtualContext }              from '@/context/virtual-context.provider'
-import { useMeasureElement }           from '@/lib/use-virtual/hooks'
+import { useMeasureElement }           from '@/core/hooks'
 import { calculateVirtualItems }       from './lib'
 import { DEFAULT_OVERSCAN }            from '@/shared/consts'
 import { DEFAULT_SCROLLING_DELAY }     from '@/shared/consts'

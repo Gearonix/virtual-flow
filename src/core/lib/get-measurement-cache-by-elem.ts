@@ -1,6 +1,6 @@
 import { MutableRefObject }        from 'react'
 
-import { LatestInstance }          from '@/lib/use-virtual/use-virtual.interfaces'
+import { LatestInstance }          from '@/core/use-virtual.interfaces'
 import { VIRTUAL_INDEX_ATTRIBUTE } from '@/shared/consts'
 import { NoVirtualIndexException } from '@/shared/exceptions'
 
