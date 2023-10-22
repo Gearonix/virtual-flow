@@ -1,27 +1,28 @@
-import { isNumber }                  from '@grnx-utils/types'
-import { Nullable }                  from '@grnx-utils/types'
-import { Undefinable }               from '@grnx-utils/types'
-import { useCallback }               from 'react'
-import { useLayoutEffect }           from 'react'
-import { useMemo }                   from 'react'
+import { isNumber }                     from '@grnx-utils/types'
+import { Nullable }                     from '@grnx-utils/types'
 /* Canary new react hook 👌 */
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { use }                       from 'react'
+import { use }                          from 'react'
+import { useCallback }                  from 'react'
+import { useMemo }                      from 'react'
 
-import { VirtualContext }            from '@/context/virtual-context.provider'
-import { DEFAULT_OVERSCAN }          from '@/shared/consts'
-import { DEFAULT_SCROLLING_DELAY }   from '@/shared/consts'
-import { VIRTUAL_INDEX_ATTRIBUTE }   from '@/shared/consts'
-import { NoVirtualIndexException }   from '@/shared/exceptions'
-import { useLatest }                 from '@/shared/hooks'
-import { createPropsValidator }      from '@/shared/lib'
+import { VirtualContextPayload }        from '@/context/virtual-context.interfaces'
+import { VirtualContext }               from '@/context/virtual-context.provider'
+import { getElementHeight }             from '@/lib/use-virtual/lib/get-element-height'
+import { DEFAULT_OVERSCAN }             from '@/shared/consts'
+import { DEFAULT_SCROLLING_DELAY }      from '@/shared/consts'
+import { useLatest }                    from '@/shared/hooks'
+import { withPropsValidator }           from '@/shared/lib'
 
-import { UseVirtualProps }           from './use-virtual.interfaces'
-import { VirtualItem }               from './use-virtual.interfaces'
-import { validateProps as validate } from './use-virtual.validate'
+import { getMeasurementCacheByElement } from './lib/get-measurement-cache-by-elem'
+import { useInitializeScrollHandlers }  from './use-initialize-scroll.hook'
+import { LatestInstance }               from './use-virtual.interfaces'
+import { UseVirtualProps }              from './use-virtual.interfaces'
+import { VirtualItem }                  from './use-virtual.interfaces'
+import { validateProps as validate }    from './use-virtual.validate'
 
-export const useVirtual = createPropsValidator(
+export const useVirtual = withPropsValidator(
   ({
     count: itemsCount,
     getScrollElement,
@@ -31,48 +32,19 @@ export const useVirtual = createPropsValidator(
     getEstimateHeight,
     getItemKey
   }: UseVirtualProps) => {
-    const ctx = use(VirtualContext)
+    const ctx: VirtualContextPayload = use(VirtualContext)
 
     const { measurementCache, scrollTop, isScrolling, listHeight } = ctx.state
-    useLayoutEffect(() => {
-      const scrollElement = getScrollElement()
 
-      if (!scrollElement) {
-        return
-      }
+    const latestInstance = useLatest({
+      measurementCache,
+      getItemKey
+    } satisfies LatestInstance)
 
-      let timeoutId: Undefinable<NodeJS.Timeout>
-
-      const handleScroll = () => {
-        const scrollTop = scrollElement.scrollTop
-
-        ctx.update({
-          scrollTop,
-          isScrolling: true
-        })
-
-        clearTimeout(timeoutId)
-
-        timeoutId = setTimeout(() => {
-          ctx.update('isScrolling', false)
-        }, scrollingDelay)
-      }
-
-      const resizeObserver = new ResizeObserver(([entry]) => {
-        const height = entry.target.getBoundingClientRect().height
-        ctx.update('listHeight', height)
-      })
-
-      resizeObserver.observe(scrollElement)
-
-      scrollElement.addEventListener('scroll', handleScroll)
-
-      return () => {
-        resizeObserver.unobserve(scrollElement)
-        clearTimeout(timeoutId)
-        scrollElement.removeEventListener('scroll', handleScroll)
-      }
-    }, [getScrollElement])
+    useInitializeScrollHandlers({
+      scrollingDelay,
+      getScrollElement
+    })
 
     const { virtualItems, totalHeight } = useMemo(() => {
       const getItemHeight = (idx: number) => {
@@ -138,31 +110,24 @@ export const useVirtual = createPropsValidator(
       measurementCache
     ])
 
-    // TODO: bring out the logic to custom hook
-
     const itemsResizeObserver = useMemo(() => {
       const resizeObserver = new ResizeObserver((entries) => {
         entries.forEach((entry) => {
           const element = entry.target
 
-          if (!element || !element.isConnected) {
+          if (!element.isConnected) {
             return void resizeObserver.unobserve(element)
           }
 
-          const idxAttribute =
-            element.getAttribute(VIRTUAL_INDEX_ATTRIBUTE) ?? ''
-          const elementIdx = Number.parseInt(idxAttribute, 10)
+          const { cacheKey, measurementCache } = getMeasurementCacheByElement({
+            element,
+            latestInstance
+          })
 
-          if (Number.isNaN(elementIdx)) {
-            throw new NoVirtualIndexException()
-          }
-
-          const { measurementCache, getItemKey } = latestData.current
-          const cacheKey = getItemKey(elementIdx)
-
-          const elementHeight =
-            entry.borderBoxSize[0].blockSize ??
-            element.getBoundingClientRect().height
+          const elementHeight = getElementHeight({
+            element,
+            entry
+          })
 
           if (measurementCache[cacheKey] === elementHeight) return
 
@@ -175,36 +140,24 @@ export const useVirtual = createPropsValidator(
       return resizeObserver
     }, [])
 
-    const latestData = useLatest({
-      measurementCache,
-      getItemKey
-    })
-
     const measureElement = useCallback(
       (element: Nullable<Element>) => {
         if (!element) return
 
-        const idxAttribute = element.getAttribute(VIRTUAL_INDEX_ATTRIBUTE) ?? ''
-        const elementIdx = Number.parseInt(idxAttribute, 10)
-
-        if (Number.isNaN(elementIdx)) {
-          throw new NoVirtualIndexException()
-        }
-
-        const { measurementCache, getItemKey } = latestData.current
-        const cacheKey = getItemKey(elementIdx)
+        const { cacheKey, measurementCache } = getMeasurementCacheByElement({
+          element,
+          latestInstance
+        })
         itemsResizeObserver.observe(element)
 
-        if (typeof measurementCache[cacheKey] === 'number') return
-
-        const elementRect = element.getBoundingClientRect()
+        if (isNumber(measurementCache[cacheKey])) return
 
         ctx.addToCache({
           key: cacheKey,
-          height: elementRect.height
+          height: getElementHeight({ element })
         })
       },
-      [latestData, itemsResizeObserver]
+      [latestInstance, itemsResizeObserver]
     )
 
     return {

@@ -13,7 +13,7 @@ export interface CreatePropsValidatorOptions<T> {
 
 type Props<T extends AnyFunction<unknown>> = Parameters<T>[0]
 
-export const createPropsValidator = <T extends AnyFunction<any>>(
+export const withPropsValidator = <T extends AnyFunction<any>>(
   hook: T,
   opts: CreatePropsValidatorOptions<Props<T>>
 ) => {

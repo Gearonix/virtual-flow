@@ -100,11 +100,6 @@ export const VirtualContextProvider = ({
     }),
     [state]
   )
-  useEffect(() => {
-    return () => {
-      console.log('unmount')
-    }
-  }, [])
 
   return (
     <VirtualContext.Provider value={contextInstance}>

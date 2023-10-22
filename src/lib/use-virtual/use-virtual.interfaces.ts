@@ -4,7 +4,7 @@ export type ItemCacheKey = string | number
 
 export interface UseVirtualProps {
   count: number
-  getScrollElement: () => Nullable<HTMLElement>
+  getScrollElement: () => Nullable<Element>
   itemHeight?: (height: number) => number
   overscan?: number
   getEstimateHeight?: (idx: number) => number
@@ -17,4 +17,9 @@ export interface VirtualItem {
   idx: number
   offsetTop: number
   virtualHeight: number
+}
+
+export interface LatestInstance {
+  measurementCache: Record<ItemCacheKey, number>
+  getItemKey: (idx: number) => ItemCacheKey
 }
