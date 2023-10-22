@@ -1,20 +1,23 @@
-import { useContext }     from 'react'
-
-import { VirtualContext } from '@/context/virtual-context.provider'
-import { VirtualItem }    from '@/lib/use-virtual/use-virtual.interfaces'
+import { ItemCacheKey } from '@/lib/use-virtual/use-virtual.interfaces'
+import { VirtualItem }  from '@/lib/use-virtual/use-virtual.interfaces'
 
 export interface CalculateVirtualItemsProps {
-  scrollTop: number
-  listHeight: number
+  rangeStart: number
+  rangeEnd: number
   itemsCount: number
-
+  overscan: number
+  getItemKey: (idx: number) => ItemCacheKey
+  getItemHeight: (idx: number) => number
 }
 
-
-export const calculateVirtualItems = () => {
-  const rangeStart = scrollTop
-  const rangeEnd = scrollTop + listHeight
-
+export const calculateVirtualItems = ({
+  rangeStart,
+  itemsCount,
+  rangeEnd,
+  overscan,
+  getItemKey,
+  getItemHeight
+}: CalculateVirtualItemsProps) => {
   let startIdx = -1
   let endIdx = -1
 
