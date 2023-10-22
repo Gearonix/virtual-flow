@@ -9,6 +9,13 @@ export interface UseMeasurementCacheByElementProps {
   latestInstance: MutableRefObject<LatestInstance>
 }
 
+/**
+ * Returns the height of the element,
+ * according to the data-vindex attribute.
+ * @param element - DOM Element
+ * @param latestInstance - instance of useLatest hook
+ */
+
 export const getMeasurementCacheByElement = ({
   element,
   latestInstance

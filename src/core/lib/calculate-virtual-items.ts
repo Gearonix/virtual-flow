@@ -10,6 +10,11 @@ export interface CalculateVirtualItemsProps {
   getItemHeight: (idx: number) => number
 }
 
+/** calculateVirtualItems
+ * @returns virtualItems {VirtualItem[]} - items to render depending on the scroll position
+ * @returns totalHeight {number} - The total height of all elements
+ */
+
 export const calculateVirtualItems = ({
   rangeStart,
   itemsCount,
