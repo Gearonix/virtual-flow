@@ -11,10 +11,10 @@
       "@nx/react/typings/cssmodule.d.ts",
       "@nx/react/typings/image.d.ts"
     ],
-    "baseUrl": ".",
+    "baseUrl": "./src",
     "paths": {
-      "@project": ["src/index.ts"],
-      "@/*": ["src/*"]
+      "@project": ["./index.ts"],
+      "@/*": ["./*"]
     }
   },
   "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"]

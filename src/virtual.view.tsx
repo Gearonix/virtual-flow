@@ -1,23 +1,21 @@
-import { faker }       from '@faker-js/faker'
-import { useCallback } from 'react'
-import { useRef }      from 'react'
-import { useState }    from 'react'
+import { faker }                  from '@faker-js/faker'
+import { useCallback }            from 'react'
+import { useRef }                 from 'react'
+import { useState }               from 'react'
 
-import { useVirtual }  from '@/lib/use-virtual'
+import { VirtualContextProvider } from '@/context'
+import { useVirtual }             from '@/lib/use-virtual'
 
 const items = Array.from({ length: 1_00 }, () => ({
   id: Math.random().toString(36).slice(2),
   text: faker.lorem.text()
 }))
 
-export const computeRandomHeight = () => {
-  return 40 + Math.round(Math.random() * 10)
-}
-
-export const Virtual = () => {
+export const VirtualFlow = () => {
   const [listItems, setListItems] = useState(items)
 
   const scrollRef = useRef<HTMLDivElement>(null)
+
   const virtualFlow = useVirtual({
     count: listItems.length,
     getEstimateHeight: useCallback(() => 40, []),
@@ -75,5 +73,13 @@ export const Virtual = () => {
         </div>
       </div>
     </div>
+  )
+}
+
+export const VirtualFlowContextWrapper = () => {
+  return (
+    <VirtualContextProvider>
+      <VirtualFlow />
+    </VirtualContextProvider>
   )
 }

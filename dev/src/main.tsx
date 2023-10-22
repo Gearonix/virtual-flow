@@ -1,11 +1,13 @@
-import { StrictMode } from 'react'
-import * as ReactDOM  from 'react-dom/client'
+import { createRoot } from 'react-dom/client'
 
 import { Entrypoint } from './entrypoint'
 
-const root = ReactDOM.createRoot(document.querySelector('#app') as HTMLElement)
-root.render(
-  <StrictMode>
-    <Entrypoint />
-  </StrictMode>
-)
+const rootElement = document.querySelector('#app')
+
+if (!rootElement) {
+  throw new Error('root element was not found in the document')
+}
+
+const root = createRoot(rootElement)
+
+root.render(<Entrypoint />)

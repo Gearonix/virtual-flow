@@ -28,8 +28,8 @@ export const useVirtual = createPropsValidator(
     getItemKey
   }: UseVirtualProps) => {
     const ctx = useVirtualContext()
+    console.log(ctx.state)
     const { measurementCache, scrollTop, isScrolling, listHeight } = ctx.state
-
     useLayoutEffect(() => {
       const scrollElement = getScrollElement()
 
@@ -184,7 +184,7 @@ export const useVirtual = createPropsValidator(
         const elementIdx = Number.parseInt(idxAttribute, 10)
 
         if (Number.isNaN(elementIdx)) {
-         throw new NoVirtualIndexException()
+          throw new NoVirtualIndexException()
         }
 
         const { measurementCache, getItemKey } = latestData.current

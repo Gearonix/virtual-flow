@@ -1,1 +1,1 @@
-export { Virtual } from './virtual.view'
+export { VirtualFlowContextWrapper as VirtualFlow } from './virtual.view'

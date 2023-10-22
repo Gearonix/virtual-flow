@@ -7,15 +7,17 @@ export interface CreatePropsValidatorOptions<T> {
 
 /**
  * creates a wrapper over the hook and checks the necessary props
- * @param hook {AnyFunction<unknown, T>}
- * @param opts {CreatePropsValidatorOptions<T>}
+ * @param hook {T}
+ * @param opts {CreatePropsValidatorOptions<Props<T>>}
  */
 
-export const createPropsValidator = <T>(
-  hook: AnyFunction<unknown, T>,
-  opts: CreatePropsValidatorOptions<T>
+type Props<T extends AnyFunction<unknown>> = Parameters<T>[0]
+
+export const createPropsValidator = <T extends AnyFunction<any>>(
+  hook: T,
+  opts: CreatePropsValidatorOptions<Props<T>>
 ) => {
-  return (props: T) => {
+  return (props: Props<T>): ReturnType<T> => {
     opts.validate(props)
 
     return hook(props)

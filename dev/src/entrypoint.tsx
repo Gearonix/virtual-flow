@@ -1,5 +1,5 @@
 import { Nullable }        from '@grnx-utils/types'
-import { Virtual }         from '@project'
+import { VirtualFlow }         from '@project'
 import { useEffect }       from 'react'
 import { useRef }          from 'react'
 
@@ -30,5 +30,5 @@ export const Entrypoint = () => {
     )
   }
 
-  return <Virtual />
+  return <VirtualFlow />
 }

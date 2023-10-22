@@ -9,5 +9,5 @@ export const isString = (value: unknown): value is string => {
 }
 
 export const isObject = (value: unknown): value is AnyObject => {
-  return typeof value === 'object'
+  return typeof value === 'object' && value !== null
 }

@@ -1,2 +1,2 @@
 export { useVirtualContext } from './virtual-context.hook'
-export { VirtualProvider } from './virtual-context.provider'
+export { VirtualContextProvider } from './virtual-context.provider'
