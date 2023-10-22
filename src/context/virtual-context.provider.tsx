@@ -1,6 +1,4 @@
 import { AnyObject }                  from '@grnx-utils/types'
-import { isObject }                   from '@grnx-utils/types'
-import { isString }                   from '@grnx-utils/types'
 import { WithChildren }               from '@grnx-utils/types'
 import { createContext }              from 'react'
 import { useEffect }                  from 'react'
@@ -9,7 +7,13 @@ import { useCallback }                from 'react'
 import { useMemo }                    from 'react'
 import { useReducer }                 from 'react'
 
+import { UnreachableCaseException }   from '@/shared/exceptions'
+import { exhaustiveCheck }            from '@/shared/lib'
+import { isObject }                   from '@/shared/type-guards'
+import { isString }                   from '@/shared/type-guards'
+
 import { CachePayload }               from './virtual-context.interfaces'
+import { VirtualContextUpdateParams } from './virtual-context.interfaces'
 import { VirtualContextUpdateMethod } from './virtual-context.interfaces'
 import { VirtualContextPayload }      from './virtual-context.interfaces'
 import { VirtualStatePayload }        from './virtual-context.interfaces'
@@ -61,18 +65,26 @@ export const VirtualContextProvider = ({
     [update]
   )
 
-  // TODO: refactor this stuff
   const updateState = useCallback(
-    (...args: Parameters<VirtualContextUpdateMethod>) => {
-      if (isObject(args[0])) {
+    ([payload, value]: VirtualContextUpdateParams) => {
+      if (isObject(payload)) {
         return update({
-          ...(args[0] as any)
+          ...payload
         })
       }
 
-      update({
-        [args[0]]: args[1]!
-      })
+      if (isString(payload)) {
+        return update({
+          [payload]: value
+        })
+      }
+
+      /**
+       * Exhaustive check
+       * @reference https://dev.to/babak/exhaustive-type-checking-with-typescript-4l3f
+       */
+
+      exhaustiveCheck(payload)
     },
     [update]
   )

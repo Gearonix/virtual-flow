@@ -1,3 +1,5 @@
+import { ValueOf }      from '@grnx-utils/types'
+
 import { ItemCacheKey } from '@/lib/use-virtual/use-virtual.interfaces'
 
 export interface CachePayload {
@@ -25,3 +27,8 @@ export interface VirtualContextUpdateMethod {
     value: VirtualStatePayload[T]
   ): void
 }
+
+export type VirtualContextUpdateParams = [
+  Partial<VirtualStatePayload> | keyof VirtualStatePayload,
+  ValueOf<VirtualStatePayload>
+]

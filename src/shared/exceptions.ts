@@ -21,3 +21,11 @@ export class NoVirtualIndexException extends Error {
     )
   }
 }
+
+export class UnreachableCaseException extends Error {
+  name = 'UnreachableCaseException'
+
+  constructor(exhaustiveValue: never) {
+    super(`Unreachable case: value ${exhaustiveValue} was unhandled`)
+  }
+}

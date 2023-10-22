@@ -4,7 +4,7 @@ export const isNumber = (value: unknown): value is number => {
   return typeof value === 'number'
 }
 
-export const isString = (value: unknown): value is string => {
+export const isString = <T extends string>(value: unknown): value is T => {
   return typeof value === 'string'
 }
 
