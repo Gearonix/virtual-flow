@@ -7,7 +7,6 @@ import { useCallback }                from 'react'
 import { useMemo }                    from 'react'
 import { useReducer }                 from 'react'
 
-import { UnreachableCaseException }   from '@/shared/exceptions'
 import { exhaustiveCheck }            from '@/shared/lib'
 import { isObject }                   from '@/shared/type-guards'
 import { isString }                   from '@/shared/type-guards'
@@ -66,7 +65,8 @@ export const VirtualContextProvider = ({
   )
 
   const updateState = useCallback(
-    ([payload, value]: VirtualContextUpdateParams) => {
+    (...updateArgs: VirtualContextUpdateParams) => {
+      const [payload, value] = updateArgs
       if (isObject(payload)) {
         return update({
           ...payload

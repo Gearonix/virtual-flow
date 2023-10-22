@@ -4,8 +4,12 @@ import { Undefinable }               from '@grnx-utils/types'
 import { useCallback }               from 'react'
 import { useLayoutEffect }           from 'react'
 import { useMemo }                   from 'react'
+/* Canary new react hook 👌 */
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { use }                       from 'react'
 
-import { useVirtualContext }         from '@/context'
+import { VirtualContext }            from '@/context/virtual-context.provider'
 import { DEFAULT_OVERSCAN }          from '@/shared/consts'
 import { DEFAULT_SCROLLING_DELAY }   from '@/shared/consts'
 import { VIRTUAL_INDEX_ATTRIBUTE }   from '@/shared/consts'
@@ -27,8 +31,8 @@ export const useVirtual = createPropsValidator(
     getEstimateHeight,
     getItemKey
   }: UseVirtualProps) => {
-    const ctx = useVirtualContext()
-    console.log(ctx.state)
+    const ctx = use(VirtualContext)
+
     const { measurementCache, scrollTop, isScrolling, listHeight } = ctx.state
     useLayoutEffect(() => {
       const scrollElement = getScrollElement()
