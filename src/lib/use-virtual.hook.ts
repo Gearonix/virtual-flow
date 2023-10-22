@@ -159,6 +159,43 @@ export const useVirtual = ({
     measurementCache
   ])
 
+  // TODO: bring out the logic to custom hook
+
+  const itemsResizeObserver = useMemo(() => {
+    const resizeObserver = new ResizeObserver((entries) => {
+      entries.forEach((entry) => {
+        const element = entry.target
+
+        if (!element || !element.isConnected) {
+          return void resizeObserver.unobserve(element)
+        }
+
+        const idxAttribute = element.getAttribute(VIRTUAL_INDEX_ATTRIBUTE) ?? ''
+        const elementIdx = Number.parseInt(idxAttribute, 10)
+
+        if (Number.isNaN(elementIdx)) {
+          // TODO: rewrite this
+          return console.error(`you forgot ${VIRTUAL_INDEX_ATTRIBUTE}`)
+        }
+
+        const { measurementCache, getItemKey } = latestData.current
+        const cacheKey = getItemKey(elementIdx)
+
+        const elementHeight =
+          entry.borderBoxSize[0].blockSize ??
+          element.getBoundingClientRect().height
+
+        if (measurementCache[cacheKey] === elementHeight) return
+
+        setMeasurementCache((cache) => ({
+          ...cache,
+          [cacheKey]: elementHeight
+        }))
+      })
+    })
+    return resizeObserver
+  }, [])
+
   const latestData = useLatest({
     measurementCache,
     getItemKey
@@ -178,6 +215,7 @@ export const useVirtual = ({
 
       const { measurementCache, getItemKey } = latestData.current
       const cacheKey = getItemKey(elementIdx)
+      itemsResizeObserver.observe(element)
 
       if (typeof measurementCache[cacheKey] === 'number') return
 
@@ -188,7 +226,7 @@ export const useVirtual = ({
         [cacheKey]: elementRect.height
       }))
     },
-    [latestData]
+    [latestData, itemsResizeObserver]
   )
 
   return {
@@ -198,5 +236,3 @@ export const useVirtual = ({
     measureElement
   }
 }
-
-export {}
