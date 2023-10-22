@@ -14,6 +14,14 @@ export interface UseMeasureElementProps {
   latestInstance: MutableRefObject<LatestInstance>
 }
 
+/**
+ * Returns a callbackRef that dynamically measures the length of the
+ * element and writes it to the cache (for optimization)
+ * @reference https://elfi-y.medium.com/react-callback-refs-a-4bd2da317269
+ * @param addToCache - method from the VirtualContext
+ * @param latestInstance - instance of useLatest hook
+ * @returns (element: Nullable<Element>) => void - callbackRef
+ */
 export const useMeasureElement = ({
   addToCache,
   latestInstance

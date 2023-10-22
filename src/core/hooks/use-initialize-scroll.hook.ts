@@ -10,6 +10,12 @@ export interface UseInitializeScrollProps {
   getScrollElement: () => Nullable<Element>
 }
 
+/**
+ * Initializes the useScroll hook. Adds a ResizeObserver to the main element,
+ * measures scrollTop and isScrolling when updated
+ * @param scrollingDelay
+ * @param getScrollElement
+ */
 export const useInitializeScrollHandlers = ({
   scrollingDelay,
   getScrollElement
