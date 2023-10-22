@@ -6,12 +6,13 @@ import { useLayoutEffect }           from 'react'
 import { useMemo }                   from 'react'
 
 import { useVirtualContext }         from '@/context'
+import { DEFAULT_OVERSCAN }          from '@/shared/consts'
+import { DEFAULT_SCROLLING_DELAY }   from '@/shared/consts'
+import { VIRTUAL_INDEX_ATTRIBUTE }   from '@/shared/consts'
+import { NoVirtualIndexException }   from '@/shared/exceptions'
 import { useLatest }                 from '@/shared/hooks'
 import { createPropsValidator }      from '@/shared/lib'
 
-import { DEFAULT_OVERSCAN }          from './consts'
-import { DEFAULT_SCROLLING_DELAY }   from './consts'
-import { VIRTUAL_INDEX_ATTRIBUTE }   from './consts'
 import { UseVirtualProps }           from './use-virtual.interfaces'
 import { VirtualItem }               from './use-virtual.interfaces'
 import { validateProps as validate } from './use-virtual.validate'
@@ -149,8 +150,7 @@ export const useVirtual = createPropsValidator(
           const elementIdx = Number.parseInt(idxAttribute, 10)
 
           if (Number.isNaN(elementIdx)) {
-            // TODO: rewrite this
-            return console.error(`you forgot ${VIRTUAL_INDEX_ATTRIBUTE}`)
+            throw new NoVirtualIndexException()
           }
 
           const { measurementCache, getItemKey } = latestData.current
@@ -184,8 +184,7 @@ export const useVirtual = createPropsValidator(
         const elementIdx = Number.parseInt(idxAttribute, 10)
 
         if (Number.isNaN(elementIdx)) {
-          // TODO: rewrite this
-          return console.error(`you forgot ${VIRTUAL_INDEX_ATTRIBUTE}`)
+         throw new NoVirtualIndexException()
         }
 
         const { measurementCache, getItemKey } = latestData.current

@@ -1,3 +1,5 @@
+import { VIRTUAL_INDEX_ATTRIBUTE } from './consts'
+
 export class UseVirtualValidateException extends Error {
   name = 'UseVirtualValidateException'
 
@@ -9,14 +11,13 @@ export class UseVirtualValidateException extends Error {
   }
 }
 
-export class JsconfigNotFoundException extends Error {
-  name = 'JsconfigNotFoundException'
+export class NoVirtualIndexException extends Error {
+  name = 'NoVirtualIndexException'
 
   constructor() {
     super(
-      'Cannot find jsconfig.json in the root. ' +
-        'Please specify root directory manually using "configure" parameters, ' +
-        'or use "jsconfig" option in "alias" preset'
+      `You forgot to attach the ${VIRTUAL_INDEX_ATTRIBUTE} attribute to 
+      your items inside the virtual container`
     )
   }
 }
