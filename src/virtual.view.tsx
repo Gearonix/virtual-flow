@@ -3,7 +3,7 @@ import { useCallback } from 'react'
 import { useRef }      from 'react'
 import { useState }    from 'react'
 
-import { useVirtual }  from '@/lib/use-virtual.hook'
+import { useVirtual }  from '@/lib/use-virtual'
 
 const items = Array.from({ length: 1_00 }, () => ({
   id: Math.random().toString(36).slice(2),
