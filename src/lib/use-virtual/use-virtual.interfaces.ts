@@ -1,6 +1,6 @@
 import { Nullable } from '@grnx-utils/types'
 
-export type ItemKey = string | number
+export type ItemCacheKey = string | number
 
 export interface UseVirtualProps {
   count: number
@@ -8,12 +8,12 @@ export interface UseVirtualProps {
   itemHeight?: (height: number) => number
   overscan?: number
   getEstimateHeight?: (idx: number) => number
-  getItemKey: (idx: number) => ItemKey
+  getItemKey: (idx: number) => ItemCacheKey
   scrollingDelay?: number
 }
 
 export interface VirtualItem {
-  key: ItemKey
+  key: ItemCacheKey
   idx: number
   offsetTop: number
   virtualHeight: number

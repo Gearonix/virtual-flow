@@ -1,21 +1,20 @@
+import { isNumber }                  from '@grnx-utils/types'
 import { Nullable }                  from '@grnx-utils/types'
 import { Undefinable }               from '@grnx-utils/types'
 import { useCallback }               from 'react'
 import { useLayoutEffect }           from 'react'
 import { useMemo }                   from 'react'
-import { useState }                  from 'react'
 
+import { useVirtualContext }         from '@/context'
 import { useLatest }                 from '@/shared/hooks'
 import { createPropsValidator }      from '@/shared/lib'
 
 import { DEFAULT_OVERSCAN }          from './consts'
 import { DEFAULT_SCROLLING_DELAY }   from './consts'
 import { VIRTUAL_INDEX_ATTRIBUTE }   from './consts'
-import { ItemKey }                   from './use-virtual.interfaces'
 import { UseVirtualProps }           from './use-virtual.interfaces'
 import { VirtualItem }               from './use-virtual.interfaces'
 import { validateProps as validate } from './use-virtual.validate'
-
 
 export const useVirtual = createPropsValidator(
   ({
@@ -27,12 +26,8 @@ export const useVirtual = createPropsValidator(
     getEstimateHeight,
     getItemKey
   }: UseVirtualProps) => {
-    const [measurementCache, setMeasurementCache] = useState<
-      Record<ItemKey, number>
-    >({})
-    const [listHeight, setListHeight] = useState(0)
-    const [scrollTop, setScrollTop] = useState(0)
-    const [isScrolling, setIsScrolling] = useState(false)
+    const ctx = useVirtualContext()
+    const { measurementCache, scrollTop, isScrolling, listHeight } = ctx.state
 
     useLayoutEffect(() => {
       const scrollElement = getScrollElement()
@@ -46,19 +41,21 @@ export const useVirtual = createPropsValidator(
       const handleScroll = () => {
         const scrollTop = scrollElement.scrollTop
 
-        setScrollTop(scrollTop)
-        setIsScrolling(true)
+        ctx.update({
+          scrollTop,
+          isScrolling: true
+        })
 
         clearTimeout(timeoutId)
 
         timeoutId = setTimeout(() => {
-          setIsScrolling(false)
+          ctx.update('isScrolling', false)
         }, scrollingDelay)
       }
 
       const resizeObserver = new ResizeObserver(([entry]) => {
         const height = entry.target.getBoundingClientRect().height
-        setListHeight(height)
+        ctx.update('listHeight', height)
       })
 
       resizeObserver.observe(scrollElement)
@@ -80,7 +77,7 @@ export const useVirtual = createPropsValidator(
 
         const itemKey = getItemKey(idx)
 
-        if (typeof measurementCache[itemKey] === 'number') {
+        if (isNumber(measurementCache[itemKey])) {
           return measurementCache[itemKey]!
         }
 
@@ -165,10 +162,10 @@ export const useVirtual = createPropsValidator(
 
           if (measurementCache[cacheKey] === elementHeight) return
 
-          setMeasurementCache((cache) => ({
-            ...cache,
-            [cacheKey]: elementHeight
-          }))
+          ctx.addToCache({
+            key: cacheKey,
+            height: elementHeight
+          })
         })
       })
       return resizeObserver
@@ -199,10 +196,10 @@ export const useVirtual = createPropsValidator(
 
         const elementRect = element.getBoundingClientRect()
 
-        setMeasurementCache((cache) => ({
-          ...cache,
-          [cacheKey]: elementRect.height
-        }))
+        ctx.addToCache({
+          key: cacheKey,
+          height: elementRect.height
+        })
       },
       [latestData, itemsResizeObserver]
     )

@@ -5,6 +5,12 @@ export interface CreatePropsValidatorOptions<T> {
   validate: VoidFunction<Partial<T>>
 }
 
+/**
+ * creates a wrapper over the hook and checks the necessary props
+ * @param hook {AnyFunction<unknown, T>}
+ * @param opts {CreatePropsValidatorOptions<T>}
+ */
+
 export const createPropsValidator = <T>(
   hook: AnyFunction<unknown, T>,
   opts: CreatePropsValidatorOptions<T>
