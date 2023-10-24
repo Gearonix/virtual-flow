@@ -7,6 +7,7 @@ import { useRef }                  from 'react'
 
 import { VirtualItem }             from '@/core/use-virtual.interfaces'
 import { VIRTUAL_INDEX_ATTRIBUTE } from '@/shared/consts'
+import { useFilterLayoutEffect }   from '@/shared/hooks'
 
 export interface VirtualElementMirrorProps {
   originalNode: ReactNode
@@ -21,25 +22,25 @@ export const VirtualElementMirror = ({
 }: VirtualElementMirrorProps) => {
   const layoutRef = useRef<Nullable<HTMLElement>>(null)
 
-  useLayoutEffect(() => {
-    const element = layoutRef.current
+  useFilterLayoutEffect(
+    (element) => {
+      element!.style.position = 'absolute'
 
-    if (!element) return
+      element.setAttribute(VIRTUAL_INDEX_ATTRIBUTE, virtualItem.idx.toString())
+    },
+    [],
+    layoutRef
+  )
 
-    element.style.position = 'absolute'
+  useFilterLayoutEffect(
+    (element) => {
+      element.style.top = `${virtualItem.offsetTop}px`
 
-    element.setAttribute(VIRTUAL_INDEX_ATTRIBUTE, virtualItem.idx.toString())
-  }, [])
-
-  useLayoutEffect(() => {
-    const element = layoutRef.current
-
-    if (!element) return
-
-    element.style.top = `${virtualItem.offsetTop}px`
-
-    cbRef(element)
-  }, [layoutRef.current])
+      cbRef(element)
+    },
+    [layoutRef.current],
+    layoutRef
+  )
 
   return cloneElement(originalNode as ReactElement, {
     ref: layoutRef,

@@ -12,6 +12,7 @@ const items = Array.from({ length: 1_00 }, () => ({
 
 export const Entrypoint = () => {
   const [listItems, setListItems] = useState(items)
+
   return (
     <div>
       <div>
@@ -19,7 +20,7 @@ export const Entrypoint = () => {
         <div>
           <button
             onClick={() => setListItems((items) => items.slice().reverse())}>
-            reverse
+            Reverse
           </button>
         </div>
       </div>
