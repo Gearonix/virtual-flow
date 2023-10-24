@@ -11,3 +11,8 @@ export const isString = <T extends string>(value: unknown): value is T => {
 export const isObject = (value: unknown): value is AnyObject => {
   return typeof value === 'object' && value !== null
 }
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export const isFunction = (value: unknown): value is Function => {
+  return typeof value === 'function'
+}

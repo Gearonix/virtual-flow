@@ -1,86 +1,58 @@
-import { faker }                  from '@faker-js/faker'
+import { CSSProperties }          from 'react'
 import { useCallback }            from 'react'
+import { useMemo }                from 'react'
 import { useRef }                 from 'react'
-import { useState }               from 'react'
 
 import { VirtualContextProvider } from '@/context'
 import { useVirtual }             from '@/core'
+import { VirtualElementMirror }   from '@/element-mirror.view'
+import { useGenerateVirtualIds }  from '@/shared/hooks'
+import { WithArrayChildren }      from '@/shared/interfaces'
 
-const items = Array.from({ length: 1_00 }, () => ({
-  id: Math.random().toString(36).slice(2),
-  text: faker.lorem.text()
-}))
-
-export const VirtualFlow = () => {
-  const [listItems, setListItems] = useState(items)
+export const VirtualFlow = ({ children }: WithArrayChildren) => {
+  const virtualIds = useGenerateVirtualIds(children.length)
 
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const virtualFlow = useVirtual({
-    count: listItems.length,
+    count: virtualIds.length,
     getEstimateHeight: useCallback(() => 40, []),
-    getItemKey: useCallback((idx: number) => listItems[idx]!.id, [listItems]),
+    getItemKey: useCallback((idx: number) => virtualIds[idx]!.id, [virtualIds]),
     getScrollElement: useCallback(() => scrollRef.current, [])
   })
 
-  return (
-    <div>
-      <div>
-        <h1>List</h1>
-        <div>
-          <button
-            onClick={() => setListItems((items) => items.slice().reverse())}>
-            reverse
-          </button>
-        </div>
-      </div>
-      <div
-        ref={scrollRef}
-        style={{
-          height: 600,
-          overflow: 'auto',
-          /**
-           * Can cause a bug at the end with scrollHeight
-           */
-          // border: '1px solid lightgrey',
-          boxSizing: 'border-box',
-          position: 'relative'
-        }}
-        className="container">
-        <div
-          style={{
-            height: virtualFlow.totalListHeight
-          }}>
-          {virtualFlow.virtualItems.map((virtualItem) => {
-            const item = listItems[virtualItem.idx]
+  const containerStyles: CSSProperties = useMemo(
+    () => ({
+      width: '100%',
+      height: '100%',
+      overflow: 'auto',
+      boxSizing: 'border-box',
+      position: 'relative'
+    }),
+    []
+  )
 
-            return (
-              <div
-                key={virtualItem.idx}
-                data-vindex={virtualItem.idx}
-                ref={virtualFlow.measureElement}
-                style={{
-                  padding: '6px 12px',
-                  border: '1px solid red',
-                  boxSizing: 'border-box',
-                  position: 'absolute',
-                  top: `${virtualItem.offsetTop}px`,
-                  width: '100%'
-                }}>
-                {item.text}
-              </div>
-            )
-          })}
-        </div>
+  return (
+    <div ref={scrollRef} style={containerStyles}>
+      <div
+        style={{
+          height: virtualFlow.totalListHeight
+        }}>
+        {virtualFlow.virtualItems.map((virtualItem) => (
+          <VirtualElementMirror
+            key={virtualItem.idx}
+            cbRef={virtualFlow.measureElement}
+            virtualItem={virtualItem}
+            originalNode={children[virtualItem.idx]}
+          />
+        ))}
       </div>
     </div>
   )
 }
 
-export const VirtualFlowContextWrapper = () => {
-  return (
-    <VirtualContextProvider>
-      <VirtualFlow />
-    </VirtualContextProvider>
-  )
-}
+export const VirtualFlowContextWrapper = ({ children }: WithArrayChildren) => (
+  <VirtualContextProvider>
+    <VirtualFlow>{children}</VirtualFlow>
+  </VirtualContextProvider>
+)

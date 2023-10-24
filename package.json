@@ -55,5 +55,9 @@
     "virtual",
     "virtual-scroll",
     "scroll"
-  ]
+  ],
+  "dependencies": {
+    "uuid-v4": "^0.1.0",
+    "uuidv4": "^6.2.13"
+  }
 }

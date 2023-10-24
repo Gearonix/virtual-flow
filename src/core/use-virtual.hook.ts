@@ -14,7 +14,7 @@ import { useLatest }                   from '@/shared/hooks'
 import { withPropsValidator }          from '@/shared/lib'
 
 import { useInitializeScrollElements } from './hooks'
-import { calculateVirtualItems }       from './lib'
+import { computeVirtualItems }       from './lib'
 import { LatestInstance }              from './use-virtual.interfaces'
 import { UseVirtualProps }             from './use-virtual.interfaces'
 import { validateProps as validate }   from './use-virtual.validate'
@@ -52,7 +52,7 @@ export const useVirtual = withPropsValidator(
         return getEstimateHeight!(idx)
       }
 
-      return calculateVirtualItems({
+      return computeVirtualItems({
         overscan,
         getItemHeight,
         getItemKey,

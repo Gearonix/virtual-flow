@@ -15,7 +15,7 @@ export interface CalculateVirtualItemsProps {
  * @returns totalHeight {number} - The total height of all elements
  */
 
-export const calculateVirtualItems = ({
+export const computeVirtualItems = ({
   rangeStart,
   itemsCount,
   rangeEnd,
@@ -42,11 +42,11 @@ export const calculateVirtualItems = ({
     totalHeight += row.virtualHeight
     allRows[idx] = row
 
-    if (row.offsetTop + row.virtualHeight > rangeStart && !~startIdx) {
+    if (!~startIdx && row.offsetTop + row.virtualHeight > rangeStart) {
       startIdx = Math.max(0, idx - overscan)
     }
 
-    if (row.offsetTop + row.virtualHeight >= rangeEnd && !~endIdx) {
+    if (!~endIdx && row.offsetTop + row.virtualHeight >= rangeEnd) {
       endIdx = Math.min(itemsCount - 1, idx + overscan)
     }
   }

@@ -11,6 +11,7 @@ import { getElementHeight }    from '@/core/lib'
 import { fixScrollCorrection } from '@/core/lib/fix-scroll-correction'
 import { LatestInstance }      from '@/core/use-virtual.interfaces'
 import { useResizeObserver }   from '@/shared/hooks'
+import { he } from '@faker-js/faker'
 
 export interface UseMeasureElementProps {
   addToCache: (payload: CachePayload) => void
@@ -40,33 +41,35 @@ export const useMeasureElement = ({
       return resizeObserver.unobserve(element)
     }
 
-    const { cacheKey, elementIdx } = getCacheKey({
+    const cacheData = getCacheKey({
       element,
       latestInstance
     })
+
+    if (!cacheData) return
 
     const { measurementCache } = latestInstance.current
     const isResize = Boolean(entry)
 
     resizeObserver.observe(element)
 
-    if (isResize && isNumber(measurementCache[cacheKey])) return
+    if (isResize && isNumber(measurementCache[cacheData.cacheKey])) return
 
     const height = getElementHeight({
       element,
       entry
     })
 
-    if (measurementCache[cacheKey] === height) return
+    if (measurementCache[cacheData.cacheKey] === height) return
 
     fixScrollCorrection({
       height,
-      elementIdx,
+      elementIdx: cacheData.elementIdx,
       latestInstance
     })
 
     addToCache({
-      key: cacheKey,
+      key: cacheData.cacheKey,
       height
     })
   }, [])
