@@ -8,13 +8,13 @@ import { useMemo }                     from 'react'
 import { VirtualContextPayload }       from '@/context/virtual-context.interfaces'
 import { VirtualContext }              from '@/context/virtual-context.provider'
 import { useMeasureElement }           from '@/core/hooks'
-import { calculateVirtualItems }       from './lib'
 import { DEFAULT_OVERSCAN }            from '@/shared/consts'
 import { DEFAULT_SCROLLING_DELAY }     from '@/shared/consts'
 import { useLatest }                   from '@/shared/hooks'
 import { withPropsValidator }          from '@/shared/lib'
 
 import { useInitializeScrollHandlers } from './hooks'
+import { calculateVirtualItems }       from './lib'
 import { LatestInstance }              from './use-virtual.interfaces'
 import { UseVirtualProps }             from './use-virtual.interfaces'
 import { validateProps as validate }   from './use-virtual.validate'
@@ -30,25 +30,14 @@ export const useVirtual = withPropsValidator(
     getItemKey
   }: UseVirtualProps) => {
     const ctx: VirtualContextPayload = use(VirtualContext)
-
     const { measurementCache, scrollTop, isScrolling, listHeight } = ctx.state
-
-    const latestInstance = useLatest({
-      measurementCache,
-      getItemKey
-    } satisfies LatestInstance)
 
     useInitializeScrollHandlers({
       scrollingDelay,
       getScrollElement
     })
 
-    const measureElement = useMeasureElement({
-      latestInstance,
-      addToCache: ctx.addToCache
-    })
-
-    const { virtualItems, totalHeight } = useMemo(() => {
+    const { virtualItems, totalHeight, allItems } = useMemo(() => {
       const getItemHeight = (idx: number) => {
         if (itemHeight) {
           return itemHeight(idx)
@@ -57,7 +46,7 @@ export const useVirtual = withPropsValidator(
         const itemKey = getItemKey(idx)
 
         if (isNumber(measurementCache[itemKey])) {
-          return measurementCache[itemKey]!
+          return measurementCache[itemKey]
         }
 
         return getEstimateHeight!(idx)
@@ -80,6 +69,19 @@ export const useVirtual = withPropsValidator(
       getEstimateHeight,
       measurementCache
     ])
+
+    const latestInstance = useLatest({
+      measurementCache,
+      getItemKey,
+      allItems,
+      getScrollElement,
+      scrollTop
+    } satisfies LatestInstance)
+
+    const measureElement = useMeasureElement({
+      latestInstance,
+      addToCache: ctx.addToCache
+    })
 
     return {
       totalListHeight: totalHeight,

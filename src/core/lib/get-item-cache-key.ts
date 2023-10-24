@@ -10,13 +10,13 @@ export interface UseMeasurementCacheByElementProps {
 }
 
 /**
- * Returns the height of the element,
+ * Returns the cache key of the element,
  * according to the data-vindex attribute.
  * @param element - DOM Element
  * @param latestInstance - instance of useLatest hook
  */
 
-export const getMeasurementCacheByElement = ({
+export const getCacheKey = ({
   element,
   latestInstance
 }: UseMeasurementCacheByElementProps) => {
@@ -27,10 +27,10 @@ export const getMeasurementCacheByElement = ({
     throw new NoVirtualIndexException()
   }
 
-  const { getItemKey, measurementCache } = latestInstance.current
+  const { getItemKey } = latestInstance.current
 
   return {
     cacheKey: getItemKey(elementIdx),
-    measurementCache
+    elementIdx
   }
 }

@@ -22,4 +22,7 @@ export interface VirtualItem {
 export interface LatestInstance {
   measurementCache: Record<ItemCacheKey, number>
   getItemKey: (idx: number) => ItemCacheKey
+  allItems: VirtualItem[]
+  getScrollElement: () => Nullable<Element>
+  scrollTop: number
 }

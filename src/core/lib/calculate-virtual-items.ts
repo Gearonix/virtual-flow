@@ -57,6 +57,7 @@ export const calculateVirtualItems = ({
 
   return {
     virtualItems,
-    totalHeight
+    totalHeight,
+    allItems: allRows
   }
 }

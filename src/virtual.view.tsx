@@ -45,7 +45,8 @@ export const VirtualFlow = () => {
           // border: '1px solid lightgrey',
           boxSizing: 'border-box',
           position: 'relative'
-        }}>
+        }}
+        className="container">
         <div
           style={{
             height: virtualFlow.totalListHeight
