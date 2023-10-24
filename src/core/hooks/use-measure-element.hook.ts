@@ -1,4 +1,5 @@
 import { isNumber }            from '@grnx-utils/types'
+import { VoidFunction }        from '@grnx-utils/types'
 import { Nullable }            from '@grnx-utils/types'
 import { MutableRefObject }    from 'react'
 import { useCallback }         from 'react'
@@ -9,6 +10,7 @@ import { getCacheKey }         from '@/core/lib'
 import { getElementHeight }    from '@/core/lib'
 import { fixScrollCorrection } from '@/core/lib/fix-scroll-correction'
 import { LatestInstance }      from '@/core/use-virtual.interfaces'
+import { useResizeObserver }   from '@/shared/hooks'
 
 export interface UseMeasureElementProps {
   addToCache: (payload: CachePayload) => void
@@ -69,15 +71,9 @@ export const useMeasureElement = ({
     })
   }, [])
 
-  const itemsResizeObserver = useMemo(() => {
-    const resizeObserver = new ResizeObserver((entries) => {
-      entries.forEach((entry) => {
-        observeElementHeight(entry.target, resizeObserver, entry)
-      })
-    })
-
-    return resizeObserver
-  }, [])
+  const itemsResizeObserver = useResizeObserver((entry, resizeObserver) => {
+    observeElementHeight(entry.target, resizeObserver, entry)
+  })
 
   return useCallback(
     (element: Nullable<Element>) => {

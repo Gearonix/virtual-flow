@@ -13,7 +13,7 @@ import { DEFAULT_SCROLLING_DELAY }     from '@/shared/consts'
 import { useLatest }                   from '@/shared/hooks'
 import { withPropsValidator }          from '@/shared/lib'
 
-import { useInitializeScrollHandlers } from './hooks'
+import { useInitializeScrollElements } from './hooks'
 import { calculateVirtualItems }       from './lib'
 import { LatestInstance }              from './use-virtual.interfaces'
 import { UseVirtualProps }             from './use-virtual.interfaces'
@@ -32,7 +32,7 @@ export const useVirtual = withPropsValidator(
     const ctx: VirtualContextPayload = use(VirtualContext)
     const { measurementCache, scrollTop, isScrolling, listHeight } = ctx.state
 
-    useInitializeScrollHandlers({
+    useInitializeScrollElements({
       scrollingDelay,
       getScrollElement
     })

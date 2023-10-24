@@ -4,6 +4,7 @@ import { useContext }      from 'react'
 import { useLayoutEffect } from 'react'
 
 import { VirtualContext }  from '@/context/virtual-context.provider'
+import { rafThrottle }     from '@/shared/lib'
 
 export interface UseInitializeScrollProps {
   scrollingDelay: number
@@ -16,7 +17,7 @@ export interface UseInitializeScrollProps {
  * @param scrollingDelay
  * @param getScrollElement
  */
-export const useInitializeScrollHandlers = ({
+export const useInitializeScrollElements = ({
   scrollingDelay,
   getScrollElement
 }: UseInitializeScrollProps) => {
@@ -53,12 +54,14 @@ export const useInitializeScrollHandlers = ({
 
     resizeObserver.observe(scrollElement)
 
-    scrollElement.addEventListener('scroll', handleScroll)
+    const throttledHandleScroll = rafThrottle(handleScroll)
+
+    scrollElement.addEventListener('scroll', throttledHandleScroll)
 
     return () => {
       resizeObserver.unobserve(scrollElement)
       clearTimeout(timeoutId)
-      scrollElement.removeEventListener('scroll', handleScroll)
+      scrollElement.removeEventListener('scroll', throttledHandleScroll)
     }
   }, [getScrollElement])
 }

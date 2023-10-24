@@ -1,6 +1,7 @@
-import { MutableRefObject } from 'react'
+import { MutableRefObject }   from 'react'
 
-import { LatestInstance }   from '@/core/use-virtual.interfaces'
+import { LatestInstance }     from '@/core/use-virtual.interfaces'
+import { createDOMScheduler } from '@/shared/lib'
 
 export interface FixScrollCorrectionProps {
   height: number
@@ -24,6 +25,10 @@ export const fixScrollCorrection = ({
   const scrollElement = getScrollElement()
 
   if (scrollElement) {
-    scrollElement.scrollBy(0, delta)
+    const schedule = createDOMScheduler()
+
+    schedule(() => {
+      scrollElement.scrollBy(0, delta)
+    })
   }
 }
