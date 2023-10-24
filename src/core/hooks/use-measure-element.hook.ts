@@ -27,39 +27,52 @@ export const useMeasureElement = ({
   addToCache,
   latestInstance
 }: UseMeasureElementProps) => {
+  const observeElementHeight = useCallback((
+    element: Nullable<Element>,
+    resizeObserver: ResizeObserver,
+    entry?: ResizeObserverEntry
+  ) => {
+    if (!element) return
+
+    if (!element.isConnected) {
+      return resizeObserver.unobserve(element)
+    }
+
+    const { cacheKey, elementIdx } = getCacheKey({
+      element,
+      latestInstance
+    })
+
+    const { measurementCache } = latestInstance.current
+    const isResize = Boolean(entry)
+
+    resizeObserver.observe(element)
+
+    if (isResize && isNumber(measurementCache[cacheKey])) return
+
+    const height = getElementHeight({
+      element,
+      entry
+    })
+
+    if (measurementCache[cacheKey] === height) return
+
+    fixScrollCorrection({
+      height,
+      elementIdx,
+      latestInstance
+    })
+
+    addToCache({
+      key: cacheKey,
+      height
+    })
+  }, [])
+
   const itemsResizeObserver = useMemo(() => {
     const resizeObserver = new ResizeObserver((entries) => {
       entries.forEach((entry) => {
-        const element = entry.target
-
-        if (!element.isConnected) {
-          return void resizeObserver.unobserve(element)
-        }
-
-        const { cacheKey, elementIdx } = getCacheKey({
-          element,
-          latestInstance
-        })
-
-        const { measurementCache } = latestInstance.current
-
-        const height = getElementHeight({
-          element,
-          entry
-        })
-
-        if (measurementCache[cacheKey] === height) return
-
-        fixScrollCorrection({
-          height,
-          elementIdx,
-          latestInstance
-        })
-
-        addToCache({
-          key: cacheKey,
-          height
-        })
+        observeElementHeight(entry.target, resizeObserver, entry)
       })
     })
 
@@ -68,31 +81,7 @@ export const useMeasureElement = ({
 
   return useCallback(
     (element: Nullable<Element>) => {
-      if (!element) return
-
-      const { cacheKey, elementIdx } = getCacheKey({
-        element,
-        latestInstance
-      })
-
-      const { measurementCache } = latestInstance.current
-
-      itemsResizeObserver.observe(element)
-
-      if (isNumber(measurementCache[cacheKey])) return
-
-      const height = getElementHeight({ element })
-
-      fixScrollCorrection({
-        height,
-        elementIdx,
-        latestInstance
-      })
-
-      addToCache({
-        key: cacheKey,
-        height
-      })
+      observeElementHeight(element, itemsResizeObserver)
     },
     [latestInstance, itemsResizeObserver]
   )
