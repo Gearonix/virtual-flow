@@ -1,13 +1,17 @@
+import                         './style.css'
+
 import { faker }          from '@faker-js/faker'
 import { VirtualFlow }    from '@project'
 import { useState }       from 'react'
 
 import { ExampleElement } from './element'
 
+/**
+ * Generating random elements
+ */
 const items = Array.from({ length: 1_00 }, () => ({
-  id: Math.random().toString(36).slice(2),
   text: faker.lorem.paragraphs(),
-  height: 80 + Math.round(Math.random() * 10)
+  height: 45 + Math.round(Math.random() * 100) // random height (45-120px)
 }))
 
 export const Entrypoint = () => {
@@ -24,13 +28,9 @@ export const Entrypoint = () => {
           </button>
         </div>
       </div>
-      <div
-        className="container"
-        style={{
-          height: 600
-        }}>
+      <div className="container">
         <VirtualFlow>
-          {listItems.map((item, idx) => (
+          {...listItems.map((item, idx) => (
             // eslint-disable-next-line react/no-array-index-key
             <ExampleElement key={idx} height={item.height}>
               {item.text}

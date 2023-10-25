@@ -3,7 +3,7 @@ import { DependencyList }   from 'react'
 import { MutableRefObject } from 'react'
 import { useLayoutEffect }  from 'react'
 
-export const useFilterLayoutEffect = <
+export const useFilteredLayoutEffect = <
   Ref extends Element,
   Fn extends (element: Ref) => void
 >(

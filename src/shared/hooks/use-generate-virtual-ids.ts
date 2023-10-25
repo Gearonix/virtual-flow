@@ -1,12 +1,13 @@
-import { useMemo } from 'react'
-import uuid        from 'uuid-v4'
+import { ReactNode } from 'react'
+import { useMemo }   from 'react'
+import uuid          from 'uuid-v4'
 
-export const useGenerateVirtualIds = (count: number) => {
+export const useGenerateVirtualIds = (elements: ReactNode[]) => {
   return useMemo(
     () =>
-      Array.from({ length: count }, () => ({
+      Array.from({ length: elements.length }, (_, idx) => ({
         id: uuid()
       })),
-    [count]
+    [elements]
   )
 }

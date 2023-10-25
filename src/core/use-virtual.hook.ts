@@ -3,6 +3,8 @@ import { isNumber }                    from '@grnx-utils/types'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { use }                         from 'react'
+import { useLayoutEffect }             from 'react'
+import { useEffect }                   from 'react'
 import { useMemo }                     from 'react'
 
 import { VirtualContextPayload }       from '@/context/virtual-context.interfaces'
@@ -14,7 +16,7 @@ import { useLatest }                   from '@/shared/hooks'
 import { withPropsValidator }          from '@/shared/lib'
 
 import { useInitializeScrollElements } from './hooks'
-import { computeVirtualItems }       from './lib'
+import { computeVirtualItems }         from './lib'
 import { LatestInstance }              from './use-virtual.interfaces'
 import { UseVirtualProps }             from './use-virtual.interfaces'
 import { validateProps as validate }   from './use-virtual.validate'

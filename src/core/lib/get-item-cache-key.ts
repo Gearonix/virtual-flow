@@ -1,4 +1,3 @@
-import { el }                      from '@faker-js/faker'
 import { MutableRefObject }        from 'react'
 
 import { LatestInstance }          from '@/core/use-virtual.interfaces'

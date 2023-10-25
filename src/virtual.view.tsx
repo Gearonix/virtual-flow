@@ -9,15 +9,20 @@ import { VirtualElementMirror }   from '@/element-mirror.view'
 import { useGenerateVirtualIds }  from '@/shared/hooks'
 import { WithArrayChildren }      from '@/shared/interfaces'
 
+export interface VirtualFlowProps {}
+
 export const VirtualFlow = ({ children }: WithArrayChildren) => {
-  const virtualIds = useGenerateVirtualIds(children.length)
+  const virtualRowsList = useGenerateVirtualIds(children)
 
   const scrollRef = useRef<HTMLDivElement>(null)
 
-  const virtualFlow = useVirtual({
-    count: virtualIds.length,
-    getEstimateHeight: useCallback(() => 40, []),
-    getItemKey: useCallback((idx: number) => virtualIds[idx]!.id, [virtualIds]),
+  const virtualRows = useVirtual({
+    count: virtualRowsList.length,
+    getEstimateHeight: useCallback(() => 80, []),
+    getItemKey: useCallback(
+      (idx: number) => virtualRowsList[idx]!.id,
+      [virtualRowsList]
+    ),
     getScrollElement: useCallback(() => scrollRef.current, [])
   })
 
@@ -36,14 +41,15 @@ export const VirtualFlow = ({ children }: WithArrayChildren) => {
     <div ref={scrollRef} style={containerStyles}>
       <div
         style={{
-          height: virtualFlow.totalListHeight
+          height: virtualRows.totalListHeight
         }}>
-        {virtualFlow.virtualItems.map((virtualItem) => (
+        {virtualRows.virtualItems.map((virtualItem) => (
           <VirtualElementMirror
             key={virtualItem.idx}
-            cbRef={virtualFlow.measureElement}
+            cbRef={virtualRows.measureElement}
             virtualItem={virtualItem}
             originalNode={children[virtualItem.idx]}
+            allRows={virtualRowsList}
           />
         ))}
       </div>
