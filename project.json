@@ -25,6 +25,17 @@
         ]
       }
     },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": [
+        "{options.reportsDirectory}"
+      ],
+      "options": {
+        "config": "vitest.config.ts",
+        "passWithNoTests": true,
+        "reportsDirectory": "coverage"
+      }
+    },
     "publish": {
       "executor": "nx:run-commands",
       "options": {
