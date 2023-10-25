@@ -1,8 +1,6 @@
 import { Nullable }                from '@grnx-utils/types'
 import { Undefinable }             from '@grnx-utils/types'
 import { cloneElement }            from 'react'
-import { useLayoutEffect }         from 'react'
-import { useEffect }               from 'react'
 import { ReactElement }            from 'react'
 import { ReactNode }               from 'react'
 import { useRef }                  from 'react'
@@ -17,7 +15,7 @@ export interface VirtualElementMirrorProps {
   virtualItem: VirtualItem
 }
 
-export const VirtualElementMirror = ({
+export const VirtualMirror = ({
   virtualItem,
   originalNode,
   cbRef

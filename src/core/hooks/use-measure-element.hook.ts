@@ -6,7 +6,7 @@ import { useCallback }         from 'react'
 import { CachePayload }        from '@/context/virtual-context.interfaces'
 import { getCacheKey }         from '@/core/lib'
 import { getElementHeight }    from '@/core/lib'
-import { fixScrollCorrection } from '@/core/lib/fix-scroll-correction'
+import { fixScrollCorrection } from '@/core/lib/scroll-correction'
 import { LatestInstance }      from '@/core/use-virtual.interfaces'
 import { useResizeObserver }   from '@/shared/hooks'
 

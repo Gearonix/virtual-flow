@@ -1,5 +1,5 @@
 {
-  "name": "project",
+  "name": "root",
   "$schema": "../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "src",
   "projectType": "library",
@@ -32,8 +32,7 @@
       ],
       "options": {
         "config": "vitest.config.ts",
-        "passWithNoTests": true,
-        "reportsDirectory": "coverage"
+        "passWithNoTests": true
       }
     },
     "publish": {
@@ -45,7 +44,7 @@
         ],
         "cwd": "dist"
       },
-      "dependsOn": ["build"]
+      "dependsOn": ["test", "build"]
     }
   }
 }

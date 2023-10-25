@@ -12,6 +12,8 @@ export interface GetElementHeightProps {
 
 export const getElementHeight = ({ element, entry }: GetElementHeightProps) => {
   return (
-    entry?.borderBoxSize[0].blockSize ?? element.getBoundingClientRect().height
+    entry?.borderBoxSize[0].blockSize ??
+    element.getBoundingClientRect().height ??
+    0
   )
 }

@@ -1,7 +1,7 @@
-import { VirtualFlowContextWrapper as VirtualFlow } from '@/virtual.view'
+import { VirtualFlowContextWrapper as VirtualFlow } from '@/virtual-flow'
 
 export { useVirtual } from './core/use-virtual.hook'
-export type { VirtualFlowProps } from '@/virtual.view'
+export type { VirtualFlowProps } from '@/virtual-flow'
 
 export { VirtualFlow }
 

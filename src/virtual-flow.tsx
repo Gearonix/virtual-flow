@@ -5,7 +5,7 @@ import { useRef }                 from 'react'
 
 import { VirtualContextProvider } from '@/context'
 import { useVirtual }             from '@/core'
-import { VirtualElementMirror }   from '@/element-mirror.view'
+import { VirtualMirror }   from '@/mirror'
 import { useGenerateVirtualIds }  from '@/shared/hooks'
 import { WithArrayChildren }      from '@/shared/interfaces'
 
@@ -44,7 +44,7 @@ export const VirtualFlow = ({ children }: WithArrayChildren) => {
           height: virtualRows.totalListHeight
         }}>
         {virtualRows.virtualItems.map((virtualItem) => (
-          <VirtualElementMirror
+          <VirtualMirror
             key={virtualItem.idx}
             cbRef={virtualRows.measureElement}
             virtualItem={virtualItem}
