@@ -1,6 +1,7 @@
 import { Nullable }                from '@grnx-utils/types'
 import { Undefinable }             from '@grnx-utils/types'
 import { cloneElement }            from 'react'
+import { useLayoutEffect }         from 'react'
 import { useEffect }               from 'react'
 import { ReactElement }            from 'react'
 import { ReactNode }               from 'react'
@@ -14,14 +15,12 @@ export interface VirtualElementMirrorProps {
   originalNode: Undefinable<ReactNode>
   cbRef: (element: Nullable<Element>) => void
   virtualItem: VirtualItem
-  allRows: any
 }
 
 export const VirtualElementMirror = ({
   virtualItem,
   originalNode,
-  cbRef,
-  allRows
+  cbRef
 }: VirtualElementMirrorProps) => {
   const layoutRef = useRef<Nullable<HTMLElement>>(null)
 
@@ -35,16 +34,22 @@ export const VirtualElementMirror = ({
     layoutRef
   )
 
-  useEffect(() => {
-    if (!layoutRef.current) return
-    const element = layoutRef.current
-    element.style.top = `${virtualItem.offsetTop}px`
+  useFilteredLayoutEffect(
+    (element) => {
+      element.style.top = `${virtualItem.offsetTop}px`
 
-    cbRef(element)
-  }, [layoutRef.current, allRows])
+      cbRef(element)
+    },
+    [layoutRef.current, virtualItem],
+    layoutRef
+  )
 
   if (!originalNode) return null
 
+  /**
+   * @reference https://react.dev/reference/react/cloneElement
+   * cloneElement is legacy method, will be rewritten
+   */
   return cloneElement(originalNode as ReactElement, {
     ref: layoutRef,
     key: virtualItem.idx

@@ -49,7 +49,6 @@ export const VirtualFlow = ({ children }: WithArrayChildren) => {
             cbRef={virtualRows.measureElement}
             virtualItem={virtualItem}
             originalNode={children[virtualItem.idx]}
-            allRows={virtualRowsList}
           />
         ))}
       </div>

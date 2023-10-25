@@ -20,9 +20,10 @@ export const Entrypoint = () => {
   return (
     <div>
       <div>
-        <h1>List</h1>
+        <h1>Virtual Flow Example</h1>
         <div>
           <button
+            className="button"
             onClick={() => setListItems((items) => items.slice().reverse())}>
             Reverse
           </button>

@@ -44,7 +44,6 @@ export const useMeasureElement = ({
     })
 
     const { measurementCache } = latestInstance.current
-    console.log(measurementCache)
     const isResize = Boolean(entry)
 
     resizeObserver.observe(element)
