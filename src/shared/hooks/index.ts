@@ -1,5 +1,5 @@
-export { useCombinedRef } from './use-combined-ref'
-export { useFilteredLayoutEffect } from './use-filtered-layout-effect'
-export { useGenerateVirtualIds } from './use-generate-virtual-ids'
+export { useCombinedRef } from './use-combined-ref.hook'
+export { useFilteredLayoutEffect } from './use-filtered-layout-effect.hook'
+export { useGenerateVirtualIds } from './use-generate-virtual-ids.hook'
 export { useLatest } from './use-latest.hook'
 export { useResizeObserver } from './use-resize-observer.hook'

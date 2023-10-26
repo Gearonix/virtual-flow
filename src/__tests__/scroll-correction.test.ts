@@ -9,7 +9,7 @@ import { vi }                  from 'vitest'
 import { fixScrollCorrection } from '@/core/lib/scroll-correction'
 import { LatestInstance }      from '@/core/use-virtual.interfaces'
 
-describe('fixScrollCorrection', () => {
+describe('fix-scroll-correction', () => {
   let height: number
   let latestInstance: MutableRefObject<LatestInstance>
   let elementIdx: number

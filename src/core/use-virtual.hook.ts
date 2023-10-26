@@ -3,8 +3,6 @@ import { isNumber }                    from '@grnx-utils/types'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { use }                         from 'react'
-import { useLayoutEffect }             from 'react'
-import { useEffect }                   from 'react'
 import { useMemo }                     from 'react'
 
 import { VirtualContextPayload }       from '@/context/virtual-context.interfaces'

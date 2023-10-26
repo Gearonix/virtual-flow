@@ -16,6 +16,6 @@ export default defineConfig({
       provider: 'c8'
     },
     environment: 'jsdom',
-    include: ['src/__tests__/*.test.{ts,tsx}']
+    include: ['src/__tests__/**/*.test.{ts,tsx}']
   }
 })
