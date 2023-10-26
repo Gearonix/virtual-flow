@@ -11,11 +11,11 @@ import { vi }                          from 'vitest'
 import { VirtualContextPayload }       from '@/context/virtual-context.interfaces'
 import { useInitializeScrollElements } from '@/core/hooks/use-initialize-scroll.hook'
 import { UseInitializeScrollProps }    from '@/core/hooks/use-initialize-scroll.hook'
-import { createTestingWrapper }        from '@/shared/lib'
+import { createTestingContextWrapper }        from '@/shared/lib'
 import { rafThrottle }                 from '@/shared/lib'
 
 describe('use-initialize-scroll-elements', () => {
-  let virtualWrapper: ReturnType<typeof createTestingWrapper>
+  let virtualWrapper: ReturnType<typeof createTestingContextWrapper>
   let ctx: Partial<VirtualContextPayload>
   let scrollElement: Element
   let getScrollElement: () => Element
@@ -23,15 +23,12 @@ describe('use-initialize-scroll-elements', () => {
   let props: UseInitializeScrollProps
   beforeEach(() => {
     vi.useFakeTimers({ shouldAdvanceTime: true })
-  })
 
-  afterEach(() => {
-    vi.useRealTimers()
     ctx = {
       update: vi.fn()
     } as unknown as Partial<VirtualContextPayload>
 
-    virtualWrapper = createTestingWrapper(ctx)
+    virtualWrapper = createTestingContextWrapper(ctx)
 
     scrollElement = document.createElement('div')
     getScrollElement = () => scrollElement
@@ -39,6 +36,10 @@ describe('use-initialize-scroll-elements', () => {
       scrollingDelay,
       getScrollElement
     }
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
   })
 
   test('should initialize scroll elements and update context', () => {

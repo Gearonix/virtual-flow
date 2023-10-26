@@ -1,0 +1,227 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`compute-virtual-items > handles a small range with no overscan 1`] = `
+[
+  {
+    "idx": 0,
+    "key": "item-0",
+    "offsetTop": 0,
+    "virtualHeight": 50,
+  },
+  {
+    "idx": 1,
+    "key": "item-1",
+    "offsetTop": 50,
+    "virtualHeight": 50,
+  },
+  {
+    "idx": 2,
+    "key": "item-2",
+    "offsetTop": 100,
+    "virtualHeight": 50,
+  },
+  {
+    "idx": 3,
+    "key": "item-3",
+    "offsetTop": 150,
+    "virtualHeight": 50,
+  },
+  {
+    "idx": 4,
+    "key": "item-4",
+    "offsetTop": 200,
+    "virtualHeight": 50,
+  },
+  {
+    "idx": 5,
+    "key": "item-5",
+    "offsetTop": 250,
+    "virtualHeight": 50,
+  },
+  {
+    "idx": 6,
+    "key": "item-6",
+    "offsetTop": 300,
+    "virtualHeight": 50,
+  },
+]
+`;
+
+exports[`compute-virtual-items > handles case where rangeStart and rangeEnd are at the beginning 1`] = `
+[
+  {
+    "idx": 0,
+    "key": "item-0",
+    "offsetTop": 0,
+    "virtualHeight": 50,
+  },
+  {
+    "idx": 1,
+    "key": "item-1",
+    "offsetTop": 50,
+    "virtualHeight": 50,
+  },
+  {
+    "idx": 2,
+    "key": "item-2",
+    "offsetTop": 100,
+    "virtualHeight": 50,
+  },
+  {
+    "idx": 3,
+    "key": "item-3",
+    "offsetTop": 150,
+    "virtualHeight": 50,
+  },
+  {
+    "idx": 4,
+    "key": "item-4",
+    "offsetTop": 200,
+    "virtualHeight": 50,
+  },
+  {
+    "idx": 5,
+    "key": "item-5",
+    "offsetTop": 250,
+    "virtualHeight": 50,
+  },
+  {
+    "idx": 6,
+    "key": "item-6",
+    "offsetTop": 300,
+    "virtualHeight": 50,
+  },
+  {
+    "idx": 7,
+    "key": "item-7",
+    "offsetTop": 350,
+    "virtualHeight": 50,
+  },
+  {
+    "idx": 8,
+    "key": "item-8",
+    "offsetTop": 400,
+    "virtualHeight": 50,
+  },
+  {
+    "idx": 9,
+    "key": "item-9",
+    "offsetTop": 450,
+    "virtualHeight": 50,
+  },
+  {
+    "idx": 10,
+    "key": "item-10",
+    "offsetTop": 500,
+    "virtualHeight": 50,
+  },
+  {
+    "idx": 11,
+    "key": "item-11",
+    "offsetTop": 550,
+    "virtualHeight": 50,
+  },
+  {
+    "idx": 12,
+    "key": "item-12",
+    "offsetTop": 600,
+    "virtualHeight": 50,
+  },
+  {
+    "idx": 13,
+    "key": "item-13",
+    "offsetTop": 650,
+    "virtualHeight": 50,
+  },
+  {
+    "idx": 14,
+    "key": "item-14",
+    "offsetTop": 700,
+    "virtualHeight": 50,
+  },
+  {
+    "idx": 15,
+    "key": "item-15",
+    "offsetTop": 750,
+    "virtualHeight": 50,
+  },
+  {
+    "idx": 16,
+    "key": "item-16",
+    "offsetTop": 800,
+    "virtualHeight": 50,
+  },
+  {
+    "idx": 17,
+    "key": "item-17",
+    "offsetTop": 850,
+    "virtualHeight": 50,
+  },
+  {
+    "idx": 18,
+    "key": "item-18",
+    "offsetTop": 900,
+    "virtualHeight": 50,
+  },
+  {
+    "idx": 19,
+    "key": "item-19",
+    "offsetTop": 950,
+    "virtualHeight": 50,
+  },
+  {
+    "idx": 20,
+    "key": "item-20",
+    "offsetTop": 1000,
+    "virtualHeight": 50,
+  },
+  {
+    "idx": 21,
+    "key": "item-21",
+    "offsetTop": 1050,
+    "virtualHeight": 50,
+  },
+  {
+    "idx": 22,
+    "key": "item-22",
+    "offsetTop": 1100,
+    "virtualHeight": 50,
+  },
+  {
+    "idx": 23,
+    "key": "item-23",
+    "offsetTop": 1150,
+    "virtualHeight": 50,
+  },
+  {
+    "idx": 24,
+    "key": "item-24",
+    "offsetTop": 1200,
+    "virtualHeight": 50,
+  },
+  {
+    "idx": 25,
+    "key": "item-25",
+    "offsetTop": 1250,
+    "virtualHeight": 50,
+  },
+  {
+    "idx": 26,
+    "key": "item-26",
+    "offsetTop": 1300,
+    "virtualHeight": 50,
+  },
+  {
+    "idx": 27,
+    "key": "item-27",
+    "offsetTop": 1350,
+    "virtualHeight": 50,
+  },
+  {
+    "idx": 28,
+    "key": "item-28",
+    "offsetTop": 1400,
+    "virtualHeight": 50,
+  },
+]
+`;

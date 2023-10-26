@@ -27,6 +27,9 @@ export const VirtualMirror = ({
       element!.style.position = 'absolute'
 
       element.setAttribute(VIRTUAL_INDEX_ATTRIBUTE, virtualItem.idx.toString())
+
+      /* see /__tests/mirror.test.tsx */
+      element.dataset.testid = 'isolated-mirror'
     },
     [],
     layoutRef

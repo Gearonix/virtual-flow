@@ -33,6 +33,8 @@ describe('compute-virtual-items', () => {
 
     const result = computeVirtualItems(payload)
 
+    expect(result.virtualItems).toMatchSnapshot()
+
     expect(result.virtualItems).toHaveLength(29)
     expect(result.totalHeight).toBe(50_000)
   })
@@ -42,6 +44,8 @@ describe('compute-virtual-items', () => {
     payload.rangeEnd = 75
 
     const result = computeVirtualItems(payload)
+
+    expect(result.virtualItems).toMatchSnapshot()
 
     expect(result.virtualItems).toHaveLength(7)
     expect(result.totalHeight).toBe(50_000)
