@@ -1,7 +1,8 @@
 {
   "name": "virtual-flow",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "MIT",
+  "description": "Virtual scroll library for React applications",
   "main": "./index.esm.js",
   "module": "./index.esm.js",
   "types": "./src/index.d.ts",

@@ -1,10 +1,10 @@
 import { MutableRefObject }        from 'react'
 import { vi }                      from 'vitest'
 
-import { ItemCacheKey }            from '@/core/use-virtual.interfaces'
-import { VirtualItem }             from '@/core/use-virtual.interfaces'
-import { LatestInstance }          from '@/core/use-virtual.interfaces'
-import { VIRTUAL_INDEX_ATTRIBUTE } from '@/shared/consts'
+import { ItemCacheKey }            from '../core/use-virtual.interfaces'
+import { VirtualItem }             from '../core/use-virtual.interfaces'
+import { LatestInstance }          from '../core/use-virtual.interfaces'
+import { VIRTUAL_INDEX_ATTRIBUTE } from '../shared/consts'
 
 export const mockResizeObserver = () => {
   const observe = vi.fn()
