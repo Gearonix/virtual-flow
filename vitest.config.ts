@@ -1,6 +1,5 @@
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin'
 import react             from '@vitejs/plugin-react'
-import { resolve }       from 'node:path'
 import tsconfigPaths     from 'vite-tsconfig-paths'
 import { defineConfig }  from 'vitest/config'
 

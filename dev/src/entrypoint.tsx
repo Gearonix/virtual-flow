@@ -1,7 +1,7 @@
 import                         './style.css'
 
 import { faker }          from '@faker-js/faker'
-import { VirtualFlow }    from '@project'
+import { VirtualFlow }    from '@lib'
 import { useState }       from 'react'
 
 import { ExampleElement } from './element'
