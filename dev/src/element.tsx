@@ -10,7 +10,7 @@ export const ExampleElement = forwardRef<
   WithChildren<ExampleElementProps>
 >(({ children, height }, ref) => {
   return (
-    <div className="element" style={{ height }} ref={ref}>
+    <div className="element" style={{ minHeight: height }} ref={ref}>
       {children}
     </div>
   )

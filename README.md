@@ -37,24 +37,27 @@ export const VirtualizedList = () => {
 }
 ```
 
-If you are using a component, you should use [forwardRef](https://react.dev/reference/react/forwardRef) 
+If you are using a component, you should use [forwardRef](https://react.dev/reference/react/forwardRef)
 to pass the ref to the regular element.
 
 ```tsx
 export const Item = forwardRef<
   HTMLDivElement,
   WithChildren<ItemProps>
->(({ children, height }, ref) => {
+>(({ children }, ref) => {
   return (
-    <div style={{ height }} ref={ref}>
+    <div ref={ref}>
       {children}
     </div>
   )
 })
 ```
 
-The library can work with dynamic heights of elements, implements caching of element heights, 
+The library can work with dynamic heights of elements, implements caching of element heights,
 reacts to changes in the length of elements (using [ResizeObserver](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver)) and also uses techniques such as scroll correction.
+
+
+<img src="https://github.com/Gearonix/virtual-flow/blob/media/showcase.gif" width="70%" height="50%" />
 
 ### Run Example
 
@@ -70,11 +73,17 @@ $ nx test
 ## Build library
 
 ```sh
-nx build
+$ nx build
 ```
 
 ---
 
-## Showcase
+## Usage API
 
-<img src="https://github.com/Gearonix/virtual-flow/blob/media/showcase.gif" width="70%" height="50%" />
+| Property                                |                   Type                   | Description                           |
+| --------------------------------------- | :--------------------------------------: | :--------------------------------------- |
+| onScroll                                |            (scrollTop: number) => void           | Callback, which will be called at the time of scrolling               |
+| estimateHeight                                   |                  number                  | Approximate length of the element, it is highly recommended to set|
+| scrollingDelay                                  |                  number                  | Delay at which callback `onScroll` will be called |
+| overscan                                |           number           | Number of elements that need to be rendered additionally |
+| itemHeight                |           (height: number) => number            | Constant height of the element. Use only if you have elements of the same length |
