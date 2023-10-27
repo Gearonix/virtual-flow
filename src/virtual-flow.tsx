@@ -5,25 +5,42 @@ import { useRef }                 from 'react'
 
 import { VirtualContextProvider } from '@/context'
 import { useVirtual }             from '@/core'
-import { VirtualMirror }   from '@/mirror'
+import { VirtualMirror }          from '@/mirror'
 import { useGenerateVirtualIds }  from '@/shared/hooks'
 import { WithArrayChildren }      from '@/shared/interfaces'
 
-export interface VirtualFlowProps {}
+export interface VirtualFlowProps {
+  estimateHeight?: number
+  itemHeight?: (height: number) => number
+  scrollingDelay?: number
+  overscan?: number
+  onScroll?: (scrollTop: number, isScrolling: boolean) => void
+}
 
-export const VirtualFlow = ({ children }: WithArrayChildren) => {
+export const VirtualFlow = ({
+  children,
+  estimateHeight,
+  itemHeight,
+  overscan,
+  scrollingDelay,
+  onScroll
+}: WithArrayChildren<VirtualFlowProps>) => {
   const virtualRowsList = useGenerateVirtualIds(children)
 
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const virtualRows = useVirtual({
     count: virtualRowsList.length,
-    getEstimateHeight: useCallback(() => 80, []),
+    getEstimateHeight: useCallback(() => estimateHeight ?? 80, []),
     getItemKey: useCallback(
       (idx: number) => virtualRowsList[idx]!.id,
       [virtualRowsList]
     ),
-    getScrollElement: useCallback(() => scrollRef.current, [])
+    getScrollElement: useCallback(() => scrollRef.current, []),
+    overscan,
+    scrollingDelay,
+    itemHeight,
+    onScroll
   })
 
   const containerStyles: CSSProperties = useMemo(
@@ -56,8 +73,10 @@ export const VirtualFlow = ({ children }: WithArrayChildren) => {
   )
 }
 
-export const VirtualFlowContextWrapper = ({ children }: WithArrayChildren) => (
+export const VirtualFlowContextWrapper = (
+  props: WithArrayChildren<VirtualFlowProps>
+) => (
   <VirtualContextProvider>
-    <VirtualFlow>{children}</VirtualFlow>
+    <VirtualFlow {...props} />
   </VirtualContextProvider>
 )

@@ -27,14 +27,16 @@ export const useVirtual = withPropsValidator(
     itemHeight,
     overscan = DEFAULT_OVERSCAN,
     getEstimateHeight,
-    getItemKey
+    getItemKey,
+    onScroll
   }: UseVirtualProps) => {
     const ctx: VirtualContextPayload = use(VirtualContext)
     const { measurementCache, scrollTop, isScrolling, listHeight } = ctx.state
 
     useInitializeScrollElements({
       scrollingDelay,
-      getScrollElement
+      getScrollElement,
+      onScroll
     })
 
     const { virtualItems, totalHeight, allItems } = useMemo(() => {

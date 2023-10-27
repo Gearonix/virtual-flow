@@ -9,6 +9,7 @@ import { rafThrottle }     from '@/shared/lib'
 export interface UseInitializeScrollProps {
   scrollingDelay: number
   getScrollElement: () => Nullable<Element>
+  onScroll?: (scrollTop: number, isScrolling: boolean) => void
 }
 
 /**
@@ -19,7 +20,8 @@ export interface UseInitializeScrollProps {
  */
 export const useInitializeScrollElements = ({
   scrollingDelay,
-  getScrollElement
+  getScrollElement,
+  onScroll
 }: UseInitializeScrollProps) => {
   const ctx = useContext(VirtualContext)
 
@@ -35,6 +37,8 @@ export const useInitializeScrollElements = ({
     const handleScroll = () => {
       const scrollTop = scrollElement.scrollTop
 
+      onScroll?.(scrollElement.scrollTop, true)
+
       ctx.update({
         scrollTop,
         isScrolling: true
@@ -44,6 +48,7 @@ export const useInitializeScrollElements = ({
 
       timeoutId = setTimeout(() => {
         ctx.update('isScrolling', false)
+        onScroll?.(scrollElement.scrollTop, false)
       }, scrollingDelay)
     }
 

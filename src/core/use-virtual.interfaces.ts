@@ -10,6 +10,7 @@ export interface UseVirtualProps {
   getEstimateHeight?: (idx: number) => number
   getItemKey: (idx: number) => ItemCacheKey
   scrollingDelay?: number
+  onScroll?: (scrollTop: number, isScrolling: boolean) => void
 }
 
 export interface VirtualItem {
